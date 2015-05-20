@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7702"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TestYTViewController">
+            <connections>
+                <outlet property="playerView" destination="Rf5-QL-lDL" id="QIs-qo-xCM"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="3BQ-j4-UgQ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rf5-QL-lDL" customClass="YTPlayerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="caL-6Q-Q3R"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="caL-6Q-Q3R"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="caL-6Q-Q3R"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Rf5-QL-lDL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T8X-mX-tGB"/>
+                <constraint firstAttribute="trailing" secondItem="Rf5-QL-lDL" secondAttribute="trailing" id="Zpm-6i-vyo"/>
+                <constraint firstItem="Rf5-QL-lDL" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="iBv-vJ-bEf">
+                    <variation key="heightClass=regular-widthClass=compact" constant="64"/>
+                </constraint>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <variation key="default">
+                <mask key="subviews">
+                    <exclude reference="Rf5-QL-lDL"/>
+                </mask>
+                <mask key="constraints">
+                    <exclude reference="T8X-mX-tGB"/>
+                    <exclude reference="Zpm-6i-vyo"/>
+                    <exclude reference="iBv-vJ-bEf"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=compact">
+                <mask key="subviews">
+                    <include reference="Rf5-QL-lDL"/>
+                </mask>
+                <mask key="constraints">
+                    <include reference="T8X-mX-tGB"/>
+                    <include reference="Zpm-6i-vyo"/>
+                    <include reference="iBv-vJ-bEf"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>

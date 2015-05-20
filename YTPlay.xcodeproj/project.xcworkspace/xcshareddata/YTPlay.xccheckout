@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>4C2DBF9B-E25F-4834-98C1-3E90BA656D4E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>95EFF1089E62687225F23425C469BBD0C23F45B0</key>
+		<string>https://github.com/ascherbinin/YTPlay.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>YTPlay/YTPlay.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>95EFF1089E62687225F23425C469BBD0C23F45B0</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ascherbinin/YTPlay.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>95EFF1089E62687225F23425C469BBD0C23F45B0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>95EFF1089E62687225F23425C469BBD0C23F45B0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YTPlay</string>
+		</dict>
+	</array>
+</dict>
+</plist>
