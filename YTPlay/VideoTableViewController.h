@@ -11,7 +11,6 @@
 
 @interface VideoTableViewController : UITableViewController
 
-@property (nonatomic, strong) TestYTViewController *ytViewController;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 

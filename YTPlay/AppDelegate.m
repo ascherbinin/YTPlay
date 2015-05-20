@@ -22,10 +22,7 @@
     
     
     VideoTableViewController *mainVideoViewController = [[VideoTableViewController alloc] initWithNibName:@"VideoTableViewController" bundle:nil];
-   
-    TestYTViewController *testController = [[TestYTViewController alloc] init];
 
-    mainVideoViewController.ytViewController = testController;
     
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
     self.window.rootViewController = self.navigationController;

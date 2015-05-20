@@ -13,6 +13,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "YTJsonItem.h"
 #import "MBProgressHUD.h"
+#import "VideoDetailViewController.h"
 
 
 
@@ -25,18 +26,15 @@
 @implementation VideoTableViewController
 
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(openVideo)];
-    self.navigationItem.rightBarButtonItem = item;
-    
-  
+    //GlobalVariable *gl = [[GlobalVariable alloc]init];
     
     self.searchBar = [[UISearchBar alloc] init];
     
     [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
+    [self updateUI];
     
 }
 
@@ -59,22 +57,21 @@
     [_videoObjects removeAllObjects];
     
     
-    NSString *strTemp = [self replaceWhiteByPlus:searchBar.text] ;
+    NSString *searchBarString = [self replaceWhiteByPlus:searchBar.text] ;
+    searchBarString = [searchBarString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *str = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",strTemp];
+    NSString *searchString = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",searchBarString];
     
-    [self loadPlayListVideos:str];
+    [self loadPlayListVideos:searchString];
     
 }
-    
-    //[self loadPlayListVideos:str];
-    
 
                    
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     
     [self.view endEditing:YES];
+      [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
 
 }
 
@@ -91,8 +88,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+   }
 
 #pragma mark - Table view data source
 
@@ -115,63 +111,6 @@
 }
 
 
--(void) loadPlayListVideos:(NSString*) urlString
-{
-
-    NSURL *mostPopularURL = [NSURL URLWithString:urlString];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:mostPopularURL];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         
-         NSDictionary *items = [responseObject objectForKey:@"items"];
-         NSLog(@"JSON Retrieved");
-         for (NSDictionary *item in items )
-                 {
-                     YTJsonItem *tempYTItem = [[YTJsonItem alloc]init];
-                     NSDictionary* snippet = [item objectForKey:@"snippet"];
-                     tempYTItem.videoTitle = [snippet objectForKey:@"title"];
-                     NSString *videoIDStr = [[snippet objectForKey:@"resourceId"]objectForKey:@"videoId"];
-                     if (videoIDStr == nil)
-                     {
-                        videoIDStr = [[item objectForKey:@"id"] objectForKey:@"videoId"];
-                            if (videoIDStr == nil)
-                            {
-                                videoIDStr = [[item objectForKey:@"id"] objectForKey:@"playlistId"];
-                                if(videoIDStr == nil)
-                                {
-                                  videoIDStr = [[item objectForKey:@"id"] objectForKey:@"channelId"];
-                                }
-                            }
-                     }
-                     tempYTItem.videoID = videoIDStr;
-                     tempYTItem.thumbURl= [[[snippet objectForKey:@"thumbnails"] objectForKey:@"default"] objectForKey:@"url"];
-                     tempYTItem.videoDate =[snippet objectForKey:@"publishedAt"];
-                     [_videoObjects addObject:tempYTItem];
-                    
-                 }
-
-         [self updateUI];
-         
-     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         
-         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
-                                                             message:[error localizedDescription]
-                                                            delegate:nil
-                                                   cancelButtonTitle:@"Ok"
-                                                   otherButtonTitles:nil];
-         [alertView show];
-     }];
-    
-    // 5
-    [operation start];
-
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -212,9 +151,9 @@
     
     cell.title.text =oneVideoItem.videoTitle;
     cell.description.text =oneVideoItem.videoID;
-    cell.date.text = [NSString stringWithFormat:@"Дата публикации: %@",oneVideoItem.videoDate];
-
-  //  cell.date.text = @"Дата публикации: %d",oneVideoItem.videoDate;
+    
+    NSArray *array = [oneVideoItem.videoDate componentsSeparatedByString:@"T"];
+    cell.date.text = [NSString stringWithFormat:@"Опубликовано: %@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
     
     return cell;
         
@@ -222,11 +161,7 @@
 }
 
 
--(void) openVideo
-{
-    [self.navigationController pushViewController:self.ytViewController animated:YES];
-    
- }
+
 
 - (void)updateUI {
     //
@@ -241,12 +176,6 @@
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     });
     
-//    BOOL isFetchingPlaylist = (_channelListTicket != nil || _playlistItemListTicket != nil);
-//    if (isFetchingPlaylist) {
-//        [_playlistProgressIndicator startAnimation:self];
-//    } else {
-//        [_playlistProgressIndicator stopAnimation:self];
-//    }
 
 
 }
@@ -258,47 +187,26 @@
 }
 
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
-/*
-#pragma mark - Table view delegate
-
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-}
-*/
+ - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Navigation logic may go here. Create and push another view controller.
+ // If you want to push another view upon tapping one of the cells on your table.
+ 
+ 
+ VideoDetailViewController *detailVideoViewController = [[VideoDetailViewController alloc] initWithNibName:@"VideoDetailViewController" bundle:nil];
+ 
+ if(indexPath)
+ {
+ YTJsonItem *item = [_videoObjects objectAtIndex:indexPath.row];
+ [detailVideoViewController getVideoID:item.videoID];
+ }
+ // ...
+ // Pass the selected object to the new view controller.
+ [self.navigationController pushViewController:detailVideoViewController animated:YES];
+ 
+ }
 
 -(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -313,5 +221,70 @@
     }
     return nameSection;
 }
+
+#pragma mark - Loding data
+#
+-(void) loadPlayListVideos:(NSString*) urlString
+{
+     [_videoObjects removeAllObjects];
+    
+    NSURL *mostPopularURL = [NSURL URLWithString:urlString];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:mostPopularURL];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         
+         NSDictionary *items = [responseObject objectForKey:@"items"];
+         NSLog(@"JSON Retrieved");
+         
+         NSLog(@"Результат поиска - %@ элементов",[[responseObject objectForKey:@"pageInfo"]objectForKey:@"totalResults"]);
+         
+         for (NSDictionary *item in items )
+         {
+             YTJsonItem *tempYTItem = [[YTJsonItem alloc]init];
+             NSDictionary* snippet = [item objectForKey:@"snippet"];
+             tempYTItem.videoTitle = [snippet objectForKey:@"title"];
+             NSString *videoIDStr = [[snippet objectForKey:@"resourceId"]objectForKey:@"videoId"];
+             if (videoIDStr == nil)
+             {
+                 videoIDStr = [[item objectForKey:@"id"] objectForKey:@"videoId"];
+                 if (videoIDStr == nil)
+                 {
+                     videoIDStr = [[item objectForKey:@"id"] objectForKey:@"playlistId"];
+                     if(videoIDStr == nil)
+                     {
+                         videoIDStr = [[item objectForKey:@"id"] objectForKey:@"channelId"];
+                     }
+                 }
+             }
+             tempYTItem.videoID = videoIDStr;
+             tempYTItem.thumbURl= [[[snippet objectForKey:@"thumbnails"] objectForKey:@"default"] objectForKey:@"url"];
+             tempYTItem.videoDate =[snippet objectForKey:@"publishedAt"];
+             [_videoObjects addObject:tempYTItem];
+             
+         }
+         
+         [self updateUI];
+         
+     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         
+         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
+                                                             message:[error localizedDescription]
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:nil];
+         [alertView show];
+     }];
+    
+    // 5
+    [operation start];
+    
+}
+
 
 @end
