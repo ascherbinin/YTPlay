@@ -9,6 +9,7 @@
 #import "VideoDetailViewController.h"
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface VideoDetailViewController ()
 
@@ -19,6 +20,7 @@
 
 @synthesize videoID;
 @synthesize videoPlayerView;
+@synthesize shadowTextView;
 @synthesize titleTextLabel = title;
 @synthesize durationTextLable = duration;
 @synthesize viewCountTextLabel = viewCount;
@@ -37,6 +39,20 @@
                                  
                                  };
     
+    videoPlayerView.layer.masksToBounds = NO;
+    videoPlayerView.layer.shadowColor = [UIColor grayColor].CGColor;
+    videoPlayerView.layer.shadowOffset = CGSizeMake(0, 0);
+    videoPlayerView.layer.shadowOpacity = 0.8;
+    videoPlayerView.layer.shadowRadius = 5;
+    videoPlayerView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:videoPlayerView.layer.bounds] CGPath];
+    
+    shadowTextView.layer.masksToBounds = NO;
+    shadowTextView.layer.shadowColor = [UIColor whiteColor].CGColor;
+    shadowTextView.layer.shadowOffset = CGSizeMake(0, 0);
+    shadowTextView.layer.shadowOpacity = 0.8;
+    shadowTextView.layer.shadowRadius = 5;
+    shadowTextView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:shadowTextView.layer.bounds] CGPath];
+  
     
     [videoPlayerView loadWithVideoId:videoID playerVars:playerVars];
     [self loadVideoInfo:[NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=snippet%%2C+statistics%%2C+contentDetails&id=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",videoID]];

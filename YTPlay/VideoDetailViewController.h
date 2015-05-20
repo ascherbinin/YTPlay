@@ -18,6 +18,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *viewCountTextLabel;
 @property (strong, nonatomic) IBOutlet UILabel *likeTextLabel;
 @property (strong, nonatomic) IBOutlet UILabel *dislikeTextLabel;
+@property (strong, nonatomic) IBOutlet UIView *shadowTextView;
 
 @property (strong, nonatomic) IBOutlet YTPlayerView *videoPlayerView;
 

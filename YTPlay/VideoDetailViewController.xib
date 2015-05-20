@@ -10,6 +10,7 @@
                 <outlet property="dislikeTextLabel" destination="Pll-J2-596" id="QNG-lx-iQY"/>
                 <outlet property="durationTextLable" destination="Gn8-O0-2cg" id="nNl-KY-coW"/>
                 <outlet property="likeTextLabel" destination="YMh-2L-Fpx" id="niK-g0-9yy"/>
+                <outlet property="shadowTextView" destination="MLG-8X-YTX" id="Lzg-1q-qdx"/>
                 <outlet property="titleTextLabel" destination="etf-fG-Luz" id="fCp-Oh-H3L"/>
                 <outlet property="videoPlayerView" destination="VyV-a8-yja" id="8ub-ly-DXr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -37,6 +38,25 @@
                     <variation key="heightClass=regular-widthClass=compact">
                         <mask key="constraints">
                             <include reference="ajC-ed-BuV"/>
+                        </mask>
+                    </variation>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MLG-8X-YTX">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="222" id="QEQ-xe-5Ye">
+                            <variation key="heightClass=regular-widthClass=compact" constant="1"/>
+                        </constraint>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="QEQ-xe-5Ye"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=compact">
+                        <mask key="constraints">
+                            <include reference="QEQ-xe-5Ye"/>
                         </mask>
                     </variation>
                 </view>
@@ -89,7 +109,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="4dZ-Xm-No9"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" white="0.75" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -284,6 +304,7 @@
                 <constraint firstItem="AIa-V4-eER" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="FOt-rq-X1R"/>
                 <constraint firstItem="z8W-gb-qG6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="FtB-bF-zm7"/>
                 <constraint firstItem="VkM-eI-K0P" firstAttribute="top" secondItem="z8W-gb-qG6" secondAttribute="bottom" constant="4" id="IyA-b1-5TH"/>
+                <constraint firstItem="MLG-8X-YTX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Qfv-4r-SRS"/>
                 <constraint firstItem="qSd-FR-8iY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Qou-nV-Pbx"/>
                 <constraint firstItem="YMh-2L-Fpx" firstAttribute="leading" secondItem="AIa-V4-eER" secondAttribute="trailing" constant="8" id="RL9-hf-ZFq"/>
                 <constraint firstItem="AIa-V4-eER" firstAttribute="top" secondItem="QV2-1t-9pi" secondAttribute="bottom" constant="8" id="SZc-b8-KS0"/>
@@ -296,6 +317,10 @@
                 <constraint firstItem="50N-1m-4MF" firstAttribute="leading" secondItem="z8W-gb-qG6" secondAttribute="trailing" constant="10" id="YqI-Mp-ar8"/>
                 <constraint firstItem="VyV-a8-yja" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Z8O-q0-YsI"/>
                 <constraint firstItem="Gn8-O0-2cg" firstAttribute="top" secondItem="50N-1m-4MF" secondAttribute="bottom" constant="4" id="Ztp-Mp-w5V"/>
+                <constraint firstItem="MLG-8X-YTX" firstAttribute="top" secondItem="VyV-a8-yja" secondAttribute="bottom" constant="2" id="a2S-x5-0Nb">
+                    <variation key="heightClass=regular-widthClass=compact" constant="0.0"/>
+                </constraint>
+                <constraint firstAttribute="trailing" secondItem="MLG-8X-YTX" secondAttribute="trailing" id="bHx-bU-Ygj"/>
                 <constraint firstItem="YMh-2L-Fpx" firstAttribute="top" secondItem="sgw-9m-Iif" secondAttribute="bottom" constant="12" id="gr5-Me-hdB"/>
                 <constraint firstAttribute="trailing" secondItem="Gn8-O0-2cg" secondAttribute="trailing" constant="58" id="hOM-kE-sG5">
                     <variation key="heightClass=regular-widthClass=compact" constant="10"/>
@@ -311,6 +336,7 @@
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="VyV-a8-yja"/>
+                    <exclude reference="MLG-8X-YTX"/>
                     <exclude reference="VkM-eI-K0P"/>
                     <exclude reference="QV2-1t-9pi"/>
                     <exclude reference="etf-fG-Luz"/>
@@ -328,6 +354,9 @@
                     <exclude reference="5Uw-hX-yzk"/>
                     <exclude reference="YoU-jf-UcV"/>
                     <exclude reference="Z8O-q0-YsI"/>
+                    <exclude reference="Qfv-4r-SRS"/>
+                    <exclude reference="a2S-x5-0Nb"/>
+                    <exclude reference="bHx-bU-Ygj"/>
                     <exclude reference="AWh-dt-x3d"/>
                     <exclude reference="YG4-Uu-uY9"/>
                     <exclude reference="tOW-VV-bBB"/>
@@ -359,6 +388,7 @@
             <variation key="heightClass=regular-widthClass=compact">
                 <mask key="subviews">
                     <include reference="VyV-a8-yja"/>
+                    <include reference="MLG-8X-YTX"/>
                     <include reference="VkM-eI-K0P"/>
                     <include reference="QV2-1t-9pi"/>
                     <include reference="etf-fG-Luz"/>
@@ -376,6 +406,9 @@
                     <include reference="5Uw-hX-yzk"/>
                     <include reference="YoU-jf-UcV"/>
                     <include reference="Z8O-q0-YsI"/>
+                    <include reference="Qfv-4r-SRS"/>
+                    <include reference="a2S-x5-0Nb"/>
+                    <include reference="bHx-bU-Ygj"/>
                     <include reference="AWh-dt-x3d"/>
                     <include reference="YG4-Uu-uY9"/>
                     <include reference="tOW-VV-bBB"/>

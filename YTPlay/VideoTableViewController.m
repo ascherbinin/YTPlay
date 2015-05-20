@@ -107,7 +107,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 250;
+    return 240;
 }
 
 
@@ -150,7 +150,6 @@
 //        }
     
     cell.title.text =oneVideoItem.videoTitle;
-    cell.description.text =oneVideoItem.videoID;
     
     NSArray *array = [oneVideoItem.videoDate componentsSeparatedByString:@"T"];
     cell.date.text = [NSString stringWithFormat:@"Опубликовано: %@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];

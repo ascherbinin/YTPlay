@@ -7,59 +7,61 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="280" id="KGk-i7-Jjw" customClass="TableVideoCell">
-            <rect key="frame" x="0.0" y="0.0" width="318" height="264"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="256" id="KGk-i7-Jjw" customClass="TableVideoCell">
+            <rect key="frame" x="0.0" y="0.0" width="318" height="240"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6JF-9K-TON" customClass="YTPlayerView">
-                        <rect key="frame" x="11" y="11" width="296" height="180"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TitleLabel" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ga6-rn-0PT">
-                        <rect key="frame" x="11" y="194" width="296" height="16"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C9j-wj-Prc">
-                        <rect key="frame" x="11" y="218" width="296" height="16"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0i-WO-aYe">
-                        <rect key="frame" x="11" y="242" width="296" height="16"/>
+                        <rect key="frame" x="11" y="217" width="296" height="14"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
                         <color key="textColor" red="0.64184816919191912" green="0.64184816919191912" blue="0.64184816919191912" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TitleLabel" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ga6-rn-0PT">
+                        <rect key="frame" x="11" y="181" width="296" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="UXe-gz-kqD"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6JF-9K-TON" customClass="YTPlayerView">
+                        <rect key="frame" x="11" y="11" width="296" height="170"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="170" id="LYV-mw-Q9Q"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="C9j-wj-Prc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="E4t-A7-0Da"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="J0i-WO-aYe" secondAttribute="trailing" constant="3" id="Jld-RI-zaz"/>
+                    <constraint firstItem="ga6-rn-0PT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="Cus-wc-ZAw"/>
+                    <constraint firstItem="J0i-WO-aYe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="Ekx-Eb-kDx"/>
+                    <constraint firstItem="ga6-rn-0PT" firstAttribute="top" secondItem="6JF-9K-TON" secondAttribute="bottom" id="NKQ-aa-YGM"/>
+                    <constraint firstItem="J0i-WO-aYe" firstAttribute="top" secondItem="ga6-rn-0PT" secondAttribute="bottom" constant="4" id="NsF-YU-HDf"/>
                     <constraint firstItem="J0i-WO-aYe" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" constant="3" id="OjL-hW-YK6"/>
-                    <constraint firstItem="ga6-rn-0PT" firstAttribute="top" secondItem="6JF-9K-TON" secondAttribute="bottom" constant="3" id="QRT-g2-OdX"/>
-                    <constraint firstItem="J0i-WO-aYe" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="TxA-0S-qQl"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="ga6-rn-0PT" secondAttribute="trailing" constant="3" id="UFG-vV-VJ7"/>
-                    <constraint firstItem="J0i-WO-aYe" firstAttribute="top" secondItem="C9j-wj-Prc" secondAttribute="bottom" constant="8" id="aDD-HL-ZH5"/>
-                    <constraint firstItem="C9j-wj-Prc" firstAttribute="top" secondItem="ga6-rn-0PT" secondAttribute="bottom" constant="8" id="epR-yv-Eww"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="C9j-wj-Prc" secondAttribute="trailing" constant="3" id="h5H-yW-DEp"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="J0i-WO-aYe" secondAttribute="bottom" id="Vjd-oe-qcd"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="J0i-WO-aYe" secondAttribute="trailing" constant="3" id="WRm-WU-GdU"/>
                     <constraint firstItem="6JF-9K-TON" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="hna-0v-Ynv"/>
                     <constraint firstAttribute="trailingMargin" secondItem="6JF-9K-TON" secondAttribute="trailing" constant="3" id="jId-6U-Kga"/>
                     <constraint firstItem="6JF-9K-TON" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="3" id="jhS-1X-WvH"/>
-                    <constraint firstItem="ga6-rn-0PT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="3" id="vrp-26-rvY"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="ga6-rn-0PT" secondAttribute="trailing" constant="3" id="lpq-Vm-ew6"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="OjL-hW-YK6"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="date" destination="J0i-WO-aYe" id="XCq-e5-YqH"/>
-                <outlet property="description" destination="C9j-wj-Prc" id="qZr-2d-73j"/>
                 <outlet property="title" destination="ga6-rn-0PT" id="6BZ-jM-NM7"/>
                 <outlet property="ytPlayerView" destination="6JF-9K-TON" id="SoN-vR-MyH"/>
             </connections>
-            <point key="canvasLocation" x="421" y="245"/>
+            <point key="canvasLocation" x="421" y="233"/>
         </tableViewCell>
     </objects>
 </document>

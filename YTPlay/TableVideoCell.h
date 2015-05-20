@@ -12,7 +12,6 @@
 @interface TableVideoCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet YTPlayerView *ytPlayerView;
 @property (strong, nonatomic) IBOutlet UILabel *title;
-@property (strong, nonatomic) IBOutlet UILabel *description;
 @property (strong, nonatomic) IBOutlet UILabel *date;
 
 @end
