@@ -58,7 +58,10 @@
     [self.view endEditing:YES];
     [_videoObjects removeAllObjects];
     
-    NSString *str = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",searchBar.text];
+    
+    NSString *strTemp = [self replaceWhiteByPlus:searchBar.text] ;
+    
+    NSString *str = [NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",strTemp];
     
     [self loadPlayListVideos:str];
     
@@ -73,6 +76,16 @@
     
     [self.view endEditing:YES];
 
+}
+
+- (NSString *)replaceWhiteByPlus:(NSString *)string {
+    
+    NSCharacterSet *charactersToRemove = [NSCharacterSet characterSetWithCharactersInString:@" "];
+    NSString *trimmedReplacement = [[string componentsSeparatedByCharactersInSet:charactersToRemove]
+                                    componentsJoinedByString:@"+"];
+    
+    return trimmedReplacement;
+    
 }
 
 
@@ -104,9 +117,7 @@
 
 -(void) loadPlayListVideos:(NSString*) urlString
 {
-    
-   
-    
+
     NSURL *mostPopularURL = [NSURL URLWithString:urlString];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:mostPopularURL];
@@ -119,7 +130,6 @@
          
          NSDictionary *items = [responseObject objectForKey:@"items"];
          NSLog(@"JSON Retrieved");
-         NSLog(@"%@", self.videoObjects);
          for (NSDictionary *item in items )
                  {
                      YTJsonItem *tempYTItem = [[YTJsonItem alloc]init];
