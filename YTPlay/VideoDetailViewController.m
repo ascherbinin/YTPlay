@@ -56,7 +56,20 @@
     
     [videoPlayerView loadWithVideoId:videoID playerVars:playerVars];
     [self loadVideoInfo:[NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=snippet%%2C+statistics%%2C+contentDetails&id=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",videoID]];
+    
+    UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
+                                                    initWithTarget:self
+                                                    action:@selector(oneFingerSwipeLeft:)] ;
+    [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [[self view] addGestureRecognizer:oneFingerSwipeLeft];
 }
+
+- (void)oneFingerSwipeLeft:(UITapGestureRecognizer *)recognizer
+{
+    
+     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 -(void) loadVideoInfo:(NSString*) urlString
 {
@@ -114,5 +127,6 @@
 {
     videoID = videoIDStr;
 }
+
 
 @end

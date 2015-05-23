@@ -10,7 +10,7 @@
 
 @implementation TableVideoCell
 
-@synthesize ytPlayerView;
+@synthesize imageView;
 @synthesize title;
 @synthesize description;
 @synthesize date;

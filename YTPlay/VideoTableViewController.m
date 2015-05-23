@@ -14,6 +14,7 @@
 #import "YTJsonItem.h"
 #import "MBProgressHUD.h"
 #import "VideoDetailViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 
 
@@ -128,26 +129,20 @@
     
     YTJsonItem *oneVideoItem = [_videoObjects objectAtIndex:indexPath.row];
     
-    NSDictionary *playerVars = @{
-                                 @"playsinline" : @1,
-                                 @"showinfo" :@0,
-                                 @"controls" :@2,
-                                 
-                                 };
-    NSLog(@"Номер строки - %ld",(long)[indexPath row]);
+   NSLog(@"Номер строки - %ld",(long)[indexPath row]);
     
-   [cell.ytPlayerView loadWithVideoId:oneVideoItem.videoID playerVars:playerVars];
+  // [cell.ytPlayerView loadWithVideoId:oneVideoItem.videoID playerVars:playerVars];
     
-//    NSString *imageStringURL = oneVideoItem.thumbURl;;
-//        NSURL* imageURL = [NSURL URLWithString: imageStringURL];
-//        if(imageURL != nil)
-//        {
-//            [cell.ytPlayerView setImageWithURL: imageURL];
-//        }
-//        else
-//        {
-//            cell.imageView.image = [UIImage imageNamed:@"glnews.png"];
-//        }
+    NSString *imageStringURL = oneVideoItem.thumbURl;;
+        NSURL* imageURL = [NSURL URLWithString: imageStringURL];
+        if(imageURL != nil)
+        {
+            [cell.imageView setImageWithURL: imageURL];
+        }
+        else
+        {
+            cell.imageView.image = [UIImage imageNamed:@"glnews.png"];
+        }
     
     cell.title.text =oneVideoItem.videoTitle;
     
@@ -203,8 +198,10 @@
  }
  // ...
  // Pass the selected object to the new view controller.
- [self.navigationController pushViewController:detailVideoViewController animated:YES];
- 
+ //[self.navigationController pushViewController:detailVideoViewController animated:YES];
+     detailVideoViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+     detailVideoViewController.modalPresentationStyle = UIModalPresentationPopover;
+     [self presentViewController:detailVideoViewController animated:YES completion:nil];
  }
 
 -(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -261,7 +258,7 @@
                  }
              }
              tempYTItem.videoID = videoIDStr;
-             tempYTItem.thumbURl= [[[snippet objectForKey:@"thumbnails"] objectForKey:@"default"] objectForKey:@"url"];
+             tempYTItem.thumbURl= [[[snippet objectForKey:@"thumbnails"] objectForKey:@"high"] objectForKey:@"url"];
              tempYTItem.videoDate =[snippet objectForKey:@"publishedAt"];
              [_videoObjects addObject:tempYTItem];
              
