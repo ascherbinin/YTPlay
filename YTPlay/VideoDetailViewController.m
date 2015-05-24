@@ -12,8 +12,12 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface VideoDetailViewController ()
-
-
+{
+    CGPoint touchStart;
+    bool isResizingUD;
+    bool isResizingLR;
+    bool isMoving;
+}
 @end
 
 @implementation VideoDetailViewController
@@ -21,6 +25,7 @@
 @synthesize videoID;
 @synthesize videoPlayerView;
 @synthesize shadowTextView;
+@synthesize videoContainer;
 @synthesize titleTextLabel = title;
 @synthesize durationTextLable = duration;
 @synthesize viewCountTextLabel = viewCount;
@@ -32,37 +37,105 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     NSLog(@"Getted Video ID - %@",videoID);
+    
+    
+//    videoPlayerView.layer.masksToBounds = NO;
+//    videoPlayerView.layer.shadowColor = [UIColor grayColor].CGColor;
+//    videoPlayerView.layer.shadowOffset = CGSizeMake(0, 0);
+//    videoPlayerView.layer.shadowOpacity = 0.8;
+//    videoPlayerView.layer.shadowRadius = 5;
+//    videoPlayerView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:videoPlayerView.layer.bounds] CGPath];
+    
+    shadowTextView.layer.masksToBounds = NO;
+    shadowTextView.layer.shadowColor = [UIColor grayColor].CGColor;
+    shadowTextView.layer.shadowOffset = CGSizeMake(0, 0);
+    shadowTextView.layer.shadowOpacity = 0.3;
+    shadowTextView.layer.shadowRadius = 5;
+    shadowTextView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:shadowTextView.layer.bounds] CGPath];
+  
     NSDictionary *playerVars = @{
                                  @"playsinline" : @1,
                                  @"showinfo" :@0,
                                  @"controls" :@2,
-                                 
+                                 @"autohide" :@0,
+                                 @"autoplay" :@1,
+                                 @"fs" :@1,
+                                 @"modestbranding" :@0
                                  };
-    
-    videoPlayerView.layer.masksToBounds = NO;
-    videoPlayerView.layer.shadowColor = [UIColor grayColor].CGColor;
-    videoPlayerView.layer.shadowOffset = CGSizeMake(0, 0);
-    videoPlayerView.layer.shadowOpacity = 0.8;
-    videoPlayerView.layer.shadowRadius = 5;
-    videoPlayerView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:videoPlayerView.layer.bounds] CGPath];
-    
-    shadowTextView.layer.masksToBounds = NO;
-    shadowTextView.layer.shadowColor = [UIColor whiteColor].CGColor;
-    shadowTextView.layer.shadowOffset = CGSizeMake(0, 0);
-    shadowTextView.layer.shadowOpacity = 0.8;
-    shadowTextView.layer.shadowRadius = 5;
-    shadowTextView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:shadowTextView.layer.bounds] CGPath];
-  
+//    CGRect videoFrame = CGRectMake(0, 0, 200, 140);
+//   // [videoPlayerView.webView setFrame:videoFrame];
+//    [videoPlayerView setFrame:videoFrame];
     
     [videoPlayerView loadWithVideoId:videoID playerVars:playerVars];
+    
     [self loadVideoInfo:[NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=snippet%%2C+statistics%%2C+contentDetails&id=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",videoID]];
     
-    UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
-                                                    initWithTarget:self
-                                                    action:@selector(oneFingerSwipeLeft:)] ;
-    [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
-    [[self view] addGestureRecognizer:oneFingerSwipeLeft];
+//    UISwipeGestureRecognizer *oneFingerSwipeLeft = [[UISwipeGestureRecognizer alloc]
+//                                                    initWithTarget:self
+//                                                    action:@selector(oneFingerSwipeLeft:)] ;
+//    [oneFingerSwipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+//    [[self view] addGestureRecognizer:oneFingerSwipeLeft];
 }
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    CGFloat kResizeThumbSize = 25.0f;
+    touchStart = [[touches anyObject] locationInView:self.view];
+    
+    CGFloat xO = videoContainer.frame.origin.x;
+    CGFloat yO = videoContainer.frame.origin.y;
+    CGFloat width = videoContainer.frame.size.width;
+    CGFloat height = videoContainer.frame.size.height;
+    NSLog(@"x0 - %f, y0-%f, width-%f, height-%f",xO,yO,width,height);
+//    isResizingUD = (xO - kResizeThumbSize < touchStart.x &&
+//                    touchStart.x < xO + width + kResizeThumbSize &&
+//                    yO + height - kResizeThumbSize < touchStart.y);
+//    isResizingLR = (yO + kResizeThumbSize < touchStart.y &&
+//                    touchStart.y< yO + height - kResizeThumbSize &&
+//                    xO + width - kResizeThumbSize < touchStart.x);
+    isMoving = (xO+kResizeThumbSize< touchStart.x &&
+                touchStart.x < xO + width - kResizeThumbSize  &&
+                yO + kResizeThumbSize < touchStart.y &&
+                touchStart.y< yO + height - kResizeThumbSize);
+    
+}
+
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    CGPoint touchPoint = [[touches anyObject] locationInView:self.view];
+    CGPoint previous = [[touches anyObject] previousLocationInView:self.view];
+    
+    CGFloat deltaWidth = touchPoint.x - previous.x;
+    CGFloat deltaHeight = touchPoint.y - previous.y;
+     NSLog(@"deltaWidth - %f, deltaHeight-%f",deltaWidth,deltaHeight);
+    // get the frame values so we can calculate changes below
+    CGFloat x = videoContainer.frame.origin.x;
+    CGFloat y = videoContainer.frame.origin.y;
+    CGFloat width = videoContainer.frame.size.width;
+    CGFloat height = videoContainer.frame.size.height;
+    CGRect startRect = [[[videoContainer layer] presentationLayer] frame];
+    
+    
+    if(CGRectContainsPoint(startRect, touchStart))
+    {
+        NSLog(@"Moving");
+        // not dragging from a corner -- move the view
+        videoContainer.frame = CGRectMake(x+deltaWidth, y+deltaHeight, width, height);
+    }
+    
+    
+    if (isResizingUD) {
+         NSLog(@"Resizing");
+        videoContainer.frame = CGRectMake(x, y, width, height+deltaHeight);
+    } else if (isResizingLR) {
+        NSLog(@"Resizing");
+        videoContainer.frame = CGRectMake(x, y, width+deltaWidth, height);
+    } else if (isMoving) {
+       
+    }
+    
+}
+
 
 - (void)oneFingerSwipeLeft:(UITapGestureRecognizer *)recognizer
 {
