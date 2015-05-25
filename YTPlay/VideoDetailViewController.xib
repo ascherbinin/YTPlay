@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VideoDetailViewController">
@@ -11,6 +11,7 @@
                 <outlet property="durationTextLable" destination="Gn8-O0-2cg" id="nNl-KY-coW"/>
                 <outlet property="likeTextLabel" destination="YMh-2L-Fpx" id="niK-g0-9yy"/>
                 <outlet property="shadowTextView" destination="MLG-8X-YTX" id="Lzg-1q-qdx"/>
+                <outlet property="textContainerView" destination="MLG-8X-YTX" id="aJR-kt-RIx"/>
                 <outlet property="titleTextLabel" destination="etf-fG-Luz" id="fCp-Oh-H3L"/>
                 <outlet property="videoContainer" destination="dRz-ca-6fw" id="OnJ-eS-SU6"/>
                 <outlet property="videoPlayerView" destination="VyV-a8-yja" id="8ub-ly-DXr"/>
@@ -341,31 +342,31 @@
                             <exclude reference="YMh-2L-Fpx"/>
                         </mask>
                         <mask key="constraints">
-                            <exclude reference="9ph-vy-UHW"/>
-                            <exclude reference="A5L-90-YGm"/>
-                            <exclude reference="qOH-X8-Db1"/>
-                            <exclude reference="RUa-q0-H2G"/>
-                            <exclude reference="YRc-Jl-fp2"/>
-                            <exclude reference="MzT-wU-YEo"/>
-                            <exclude reference="Xfh-Qp-TaV"/>
-                            <exclude reference="84H-fK-7Fd"/>
-                            <exclude reference="9g6-ge-ALa"/>
-                            <exclude reference="ZrZ-OJ-ckz"/>
                             <exclude reference="OJR-9Y-fKe"/>
                             <exclude reference="d5h-FW-me0"/>
                             <exclude reference="qs7-3N-vDz"/>
-                            <exclude reference="0gu-GS-36G"/>
-                            <exclude reference="1Gk-Qg-XhY"/>
-                            <exclude reference="bUk-wY-Sgy"/>
-                            <exclude reference="nAr-Jf-dyw"/>
-                            <exclude reference="NRl-Pt-aUE"/>
-                            <exclude reference="aiO-TH-Gr9"/>
-                            <exclude reference="EA8-l2-jim"/>
-                            <exclude reference="EHK-l3-VI3"/>
-                            <exclude reference="ndd-aa-ssb"/>
+                            <exclude reference="84H-fK-7Fd"/>
+                            <exclude reference="9g6-ge-ALa"/>
+                            <exclude reference="ZrZ-OJ-ckz"/>
                             <exclude reference="I72-oF-ak4"/>
                             <exclude reference="TXj-R5-66R"/>
                             <exclude reference="iCu-Lw-ure"/>
+                            <exclude reference="nAr-Jf-dyw"/>
+                            <exclude reference="RUa-q0-H2G"/>
+                            <exclude reference="YRc-Jl-fp2"/>
+                            <exclude reference="1Gk-Qg-XhY"/>
+                            <exclude reference="bUk-wY-Sgy"/>
+                            <exclude reference="9ph-vy-UHW"/>
+                            <exclude reference="A5L-90-YGm"/>
+                            <exclude reference="qOH-X8-Db1"/>
+                            <exclude reference="EA8-l2-jim"/>
+                            <exclude reference="EHK-l3-VI3"/>
+                            <exclude reference="ndd-aa-ssb"/>
+                            <exclude reference="MzT-wU-YEo"/>
+                            <exclude reference="Xfh-Qp-TaV"/>
+                            <exclude reference="0gu-GS-36G"/>
+                            <exclude reference="NRl-Pt-aUE"/>
+                            <exclude reference="aiO-TH-Gr9"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=regular-widthClass=compact">
@@ -383,31 +384,31 @@
                             <include reference="YMh-2L-Fpx"/>
                         </mask>
                         <mask key="constraints">
-                            <include reference="9ph-vy-UHW"/>
-                            <include reference="A5L-90-YGm"/>
-                            <include reference="qOH-X8-Db1"/>
-                            <include reference="RUa-q0-H2G"/>
-                            <include reference="YRc-Jl-fp2"/>
-                            <include reference="MzT-wU-YEo"/>
-                            <include reference="Xfh-Qp-TaV"/>
-                            <include reference="84H-fK-7Fd"/>
-                            <include reference="9g6-ge-ALa"/>
-                            <include reference="ZrZ-OJ-ckz"/>
                             <include reference="OJR-9Y-fKe"/>
                             <include reference="d5h-FW-me0"/>
                             <include reference="qs7-3N-vDz"/>
-                            <include reference="0gu-GS-36G"/>
-                            <include reference="1Gk-Qg-XhY"/>
-                            <include reference="bUk-wY-Sgy"/>
-                            <include reference="nAr-Jf-dyw"/>
-                            <include reference="NRl-Pt-aUE"/>
-                            <include reference="aiO-TH-Gr9"/>
-                            <include reference="EA8-l2-jim"/>
-                            <include reference="EHK-l3-VI3"/>
-                            <include reference="ndd-aa-ssb"/>
+                            <include reference="84H-fK-7Fd"/>
+                            <include reference="9g6-ge-ALa"/>
+                            <include reference="ZrZ-OJ-ckz"/>
                             <include reference="I72-oF-ak4"/>
                             <include reference="TXj-R5-66R"/>
                             <include reference="iCu-Lw-ure"/>
+                            <include reference="nAr-Jf-dyw"/>
+                            <include reference="RUa-q0-H2G"/>
+                            <include reference="YRc-Jl-fp2"/>
+                            <include reference="1Gk-Qg-XhY"/>
+                            <include reference="bUk-wY-Sgy"/>
+                            <include reference="9ph-vy-UHW"/>
+                            <include reference="A5L-90-YGm"/>
+                            <include reference="qOH-X8-Db1"/>
+                            <include reference="EA8-l2-jim"/>
+                            <include reference="EHK-l3-VI3"/>
+                            <include reference="ndd-aa-ssb"/>
+                            <include reference="MzT-wU-YEo"/>
+                            <include reference="Xfh-Qp-TaV"/>
+                            <include reference="0gu-GS-36G"/>
+                            <include reference="NRl-Pt-aUE"/>
+                            <include reference="aiO-TH-Gr9"/>
                         </mask>
                     </variation>
                 </view>
@@ -422,7 +423,6 @@
                 <constraint firstItem="dRz-ca-6fw" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="xnv-FU-QSA"/>
                 <constraint firstItem="MLG-8X-YTX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xui-iO-JBK"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="dRz-ca-6fw"/>

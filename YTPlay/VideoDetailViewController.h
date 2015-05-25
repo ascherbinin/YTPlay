@@ -20,6 +20,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *dislikeTextLabel;
 @property (strong, nonatomic) IBOutlet UIView *shadowTextView;
 @property (weak, nonatomic) IBOutlet UIView *videoContainer;
+@property (strong, nonatomic) IBOutlet UIView *textContainerView;
 
 @property (strong, nonatomic) IBOutlet YTPlayerView *videoPlayerView;
 

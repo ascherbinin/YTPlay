@@ -15,8 +15,6 @@
 		938E79F31B09864F0079101F /* YTPlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E79F21B09864F0079101F /* YTPlayTests.m */; };
 		938E7A071B09914B0079101F /* VideoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E7A051B09914B0079101F /* VideoTableViewController.m */; };
 		938E7A081B09914B0079101F /* VideoTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938E7A061B09914B0079101F /* VideoTableViewController.xib */; };
-		938E7A0C1B0995A30079101F /* TestYTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E7A0A1B0995A30079101F /* TestYTViewController.m */; };
-		938E7A0D1B0995A30079101F /* TestYTViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938E7A0B1B0995A30079101F /* TestYTViewController.xib */; };
 		938E7A1A1B09AF650079101F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938E7A191B09AF650079101F /* MediaPlayer.framework */; };
 		938E7A1F1B09C3260079101F /* TableVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E7A1D1B09C3260079101F /* TableVideoCell.m */; };
 		938E7A201B09C3260079101F /* TableVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938E7A1E1B09C3260079101F /* TableVideoCell.xib */; };
@@ -54,9 +52,6 @@
 		938E7A041B09914B0079101F /* VideoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoTableViewController.h; sourceTree = "<group>"; };
 		938E7A051B09914B0079101F /* VideoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoTableViewController.m; sourceTree = "<group>"; };
 		938E7A061B09914B0079101F /* VideoTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoTableViewController.xib; sourceTree = "<group>"; };
-		938E7A091B0995A30079101F /* TestYTViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestYTViewController.h; sourceTree = "<group>"; };
-		938E7A0A1B0995A30079101F /* TestYTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestYTViewController.m; sourceTree = "<group>"; };
-		938E7A0B1B0995A30079101F /* TestYTViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestYTViewController.xib; sourceTree = "<group>"; };
 		938E7A191B09AF650079101F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		938E7A1C1B09C3260079101F /* TableVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableVideoCell.h; sourceTree = "<group>"; };
 		938E7A1D1B09C3260079101F /* TableVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableVideoCell.m; sourceTree = "<group>"; };
@@ -140,9 +135,6 @@
 				938E7A031B098E6F0079101F /* MainView */,
 				938E79E51B09864F0079101F /* LaunchScreen.xib */,
 				938E79D61B09864F0079101F /* Supporting Files */,
-				938E7A091B0995A30079101F /* TestYTViewController.h */,
-				938E7A0A1B0995A30079101F /* TestYTViewController.m */,
-				938E7A0B1B0995A30079101F /* TestYTViewController.xib */,
 			);
 			path = YTPlay;
 			sourceTree = "<group>";
@@ -330,7 +322,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				938E7A081B09914B0079101F /* VideoTableViewController.xib in Resources */,
-				938E7A0D1B0995A30079101F /* TestYTViewController.xib in Resources */,
 				93A333D21B0C6A9200FDE094 /* like.png in Resources */,
 				938E7A201B09C3260079101F /* TableVideoCell.xib in Resources */,
 				93A333D11B0C6A9200FDE094 /* dislike.png in Resources */,
@@ -390,7 +381,6 @@
 			files = (
 				938E7A071B09914B0079101F /* VideoTableViewController.m in Sources */,
 				938E7A1F1B09C3260079101F /* TableVideoCell.m in Sources */,
-				938E7A0C1B0995A30079101F /* TestYTViewController.m in Sources */,
 				938E79DC1B09864F0079101F /* AppDelegate.m in Sources */,
 				938E79D91B09864F0079101F /* main.m in Sources */,
 				93A333C61B0C4E7B00FDE094 /* GlobalVariable.m in Sources */,

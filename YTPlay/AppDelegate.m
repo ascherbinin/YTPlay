@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "VideoTableViewController.h"
-#import "TestYTViewController.h"
+#import "YTPlayerView.h"
 
 @interface AppDelegate ()
 
@@ -23,13 +23,14 @@
     
     VideoTableViewController *mainVideoViewController = [[VideoTableViewController alloc] initWithNibName:@"VideoTableViewController" bundle:nil];
 
+     UINavigationController *popularVideoNavigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
+//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
+//    self.window.rootViewController = self.navigationController;
     
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
-    self.window.rootViewController = self.navigationController;
     
-    
-    self.window.backgroundColor = [UIColor whiteColor];
+    //self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+     [self.window setRootViewController:popularVideoNavigationController];
     return YES;
 }
 

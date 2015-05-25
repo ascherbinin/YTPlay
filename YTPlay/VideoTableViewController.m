@@ -7,7 +7,7 @@
 //
 
 #import "VideoTableViewController.h"
-#import "TestYTViewController.h"
+#import "YTPlayerVIew.h"
 #import "TableVideoCell.h"
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperation.h"
@@ -18,22 +18,71 @@
 
 
 
-@interface VideoTableViewController ()
+@interface VideoTableViewController () <UITableViewDelegate,
+                                        UITableViewDataSource,
+                                        UISearchBarDelegate,
+                                        UISearchControllerDelegate,
+                                        YTPlayerViewDelegate>
 
-@property (nonatomic,strong) NSMutableArray* videoObjects;
-
+@property bool isMinimized;
+@property BOOL sbNeed;
 @end
 
 @implementation VideoTableViewController
-
+@synthesize detailView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     //GlobalVariable *gl = [[GlobalVariable alloc]init];
     
-    self.searchBar = [[UISearchBar alloc] init];
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    [self.searchController setHidesNavigationBarDuringPresentation:NO];
+    [self.searchController.searchBar sizeToFit];
+    self.searchController.searchBar.delegate = self;
+    self.searchController.searchBar.placeholder = @"Поиск!";
     
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    self.videoView.delegate = self;
+    
+     self.tableView.tableHeaderView = self.searchController.searchBar;
+  
+    
+    self.view.frame = [[UIScreen mainScreen] bounds];
+    
+    CGRect playerViewRect = CGRectMake(0- self.view.frame.size.width,
+                                       0 + self.view.frame.size.height,
+                                       self.view.frame.size.width,
+                                       self.view.frame.size.width / 16 * 9 + 20);
+    CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
+                                        playerViewRect.size.height,
+                                        playerViewRect.size.width,
+                                        self.view.frame.size.height - playerViewRect.size.height);
+    
+    self.videoView.frame = playerViewRect;
+    
+    self.detailView.frame = detailsViewRect;
+    
+    
+    UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDown:)];
+    UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp:)];
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
+    
+    swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
+    swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    
+    [self.videoView addGestureRecognizer:swipeDown];
+    [self.videoView addGestureRecognizer:swipeUp];
+    [self.videoView addGestureRecognizer:swipeLeft];
+    
+    self.tableView.frame = self.view.bounds;
+    NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
+    NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
+    NSLog(@"Table View frame=%@", NSStringFromCGRect(_tableView.frame));
     [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
     [self updateUI];
     
@@ -72,6 +121,7 @@
 {
     
     [self.view endEditing:YES];
+    
       [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
 
 }
@@ -118,7 +168,7 @@
     
     
     static NSString *CellIdentifier = @"VideoCell";
-    TableVideoCell *cell = (TableVideoCell*) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    TableVideoCell *cell = (TableVideoCell*) [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     
     if (cell == nil)
@@ -185,38 +235,64 @@
 
 
  - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
- // Navigation logic may go here. Create and push another view controller.
- // If you want to push another view upon tapping one of the cells on your table.
- 
- 
- VideoDetailViewController *detailVideoViewController = [[VideoDetailViewController alloc] initWithNibName:@"VideoDetailViewController" bundle:nil];
- 
- if(indexPath)
- {
- YTJsonItem *item = [_videoObjects objectAtIndex:indexPath.row];
- [detailVideoViewController getVideoID:item.videoID];
- }
- // ...
- // Pass the selected object to the new view controller.
- //[self.navigationController pushViewController:detailVideoViewController animated:YES];
-     detailVideoViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-     detailVideoViewController.modalPresentationStyle = UIModalPresentationPopover;
-     [self presentViewController:detailVideoViewController animated:YES completion:nil];
- }
 
--(NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *nameSection;
-    switch (section) {
-        case 0:
-            nameSection = @"Популярное на YouTube";
-            break;
-            
-        default:
-            break;
-    }
-    return nameSection;
-}
+     NSDictionary *playerVars = @{
+                                  @"playsinline" : @"1",
+                                  @"autoplay" :@1,
+                                  @"showinfo" :@0,
+                                  @"controls" :@1,
+                                  @"enablejsapi" :@1,
+                                  @"modestbranding" :@1,
+                                  @"rel": @0,
+                                  @"fs": @1,
+                                  @"theme" :@"light"
+                                  
+                                  
+                                  };
+     
+     if(indexPath)
+     {
+         YTJsonItem *item = [_videoObjects objectAtIndex:indexPath.row];
+         [self.videoView loadWithVideoId:item.videoID playerVars:playerVars];
+         
+         [self loadVideoInfo:[NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?part=snippet%%2C+statistics%%2C+contentDetails&id=%@&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo",item.videoID]];
+     }
+
+     [[self navigationController] setNavigationBarHidden:YES animated:YES];
+
+     
+      [self.view endEditing:YES];
+     
+     self.sbNeed = NO;
+     [self setNeedsStatusBarAppearanceUpdate];
+     
+     
+     [UIView animateWithDuration:0.3 animations:^
+      {
+          CGRect playerViewRect = self.videoView.frame;
+          CGRect detailsViewRect = self.detailView.frame;
+          
+          NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
+          NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
+          
+          playerViewRect.origin.x = 0;
+          playerViewRect.origin.y = 0;
+          playerViewRect.size.width = self.view.bounds.size.width;
+          playerViewRect.size.height = playerViewRect.size.width / 16 * 9 + 20;
+          self.videoView.frame = playerViewRect;
+          
+          detailsViewRect.origin.x = 0;
+          detailsViewRect.origin.y = playerViewRect.size.height;
+          self.detailView.frame = detailsViewRect;
+          self.detailView.alpha = 1.0;
+          
+          [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    
+      }];
+
+     
+  
+ }
 
 #pragma mark - Loding data
 #
@@ -280,6 +356,149 @@
     // 5
     [operation start];
     
+}
+
+- (BOOL)IsMinimized {
+    return self.videoView.frame.origin.y > 50;
+}
+
+
+- (void)swipeDown:(UIGestureRecognizer *)gr {
+    [self minimizeVideo:YES animated:YES];
+}
+
+- (void)swipeUp:(UIGestureRecognizer *)gr {
+    [self minimizeVideo:NO animated:YES];
+}
+
+- (void)swipeLeft:(UIGestureRecognizer *)gr {
+    NSLog(@"Swipe Left");
+    if(![self IsMinimized])
+    {
+        return;
+    }
+    CGRect playerFrame = self.videoView.frame;
+    playerFrame.origin.x = -self.videoView.frame.size.width;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.videoView.frame = playerFrame;
+
+    }];
+}
+
+
+- (void)minimizeVideo:(BOOL)minimized animated:(BOOL)animated {
+    
+    if ([self IsMinimized] == minimized) return;
+    
+    CGRect tallContainerFrame, containerFrame;
+    CGFloat tallContainerAlpha;
+    
+    if (minimized)
+    {
+        CGFloat mpWidth = self.videoView.frame.size.width / 2;
+        CGFloat mpHeight = self.videoView.frame.size.height / 2;
+        
+        CGFloat x = self.view.bounds.size.width-mpWidth - 20;
+        CGFloat y = self.view.bounds.size.height-mpHeight - 20;
+        
+        NSLog(@"X: Bound:%f, Frame: %f, Position: %f", self.view.bounds.size.width, self.view.frame.size.width, x);
+        NSLog(@"Y: Bound:%f, Frame: %f, Position: %f", self.view.bounds.size.height, self.view.frame.size.height, y);
+        
+        tallContainerFrame = CGRectMake(0, self.view.frame.size.height,
+                                        self.detailView.frame.size.width, self.detailView.frame.size.height);
+        containerFrame = CGRectMake(x, y, mpWidth, mpHeight);
+        tallContainerAlpha = 0.0;
+        
+        self.searchController.active = NO;
+        [self.view endEditing:YES];
+        
+        self.sbNeed = YES;
+        [self setNeedsStatusBarAppearanceUpdate];
+        
+        [[self navigationController] setNavigationBarHidden:NO animated:YES];
+    }
+    else
+    {
+        containerFrame.origin.x = 0;
+        containerFrame.origin.y = 0;
+        containerFrame.size.width = self.view.bounds.size.width;
+        containerFrame.size.height = containerFrame.size.width / 16 * 9 + 20;
+        
+        tallContainerFrame = self.detailView.frame;
+        tallContainerFrame.origin.y = containerFrame.size.height;
+        tallContainerAlpha = 1.0;
+        
+      
+        self.sbNeed = NO;
+        [self setNeedsStatusBarAppearanceUpdate];
+        
+        [[self navigationController] setNavigationBarHidden:YES animated:YES];
+    }
+    
+    NSTimeInterval duration = (animated)? 0.3 : 0.0;
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        //self.youTubePlayer.frame = containerFrame;
+        self.videoView.frame = containerFrame;
+        // self.playerView.webView.frame = CGRectMake(0, 0, containerFrame.size.width, containerFrame.size.height);
+        self.detailView.frame = tallContainerFrame;
+        self.detailView.alpha = tallContainerAlpha;
+        
+    }];
+}
+
+-(void) loadVideoInfo:(NSString*) urlString
+{
+    
+    NSURL *videoIdURL = [NSURL URLWithString:urlString];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:videoIdURL];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         
+         NSDictionary *items = [responseObject objectForKey:@"items"];
+         NSLog(@"JSON Retrieved");
+         
+         for (NSDictionary *item in items )
+         {
+             NSDictionary* snippet = [item objectForKey:@"snippet"];
+             _titleVideo.text = [snippet objectForKey:@"title"];
+             
+             NSArray *array = [[snippet objectForKey:@"publishedAt"] componentsSeparatedByString:@"T"];
+             _date.text = [NSString stringWithFormat:@"%@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
+             _duration.text = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];
+             _viewCount.text = [[item objectForKey:@"statistics"] objectForKey:@"viewCount"];
+             _likeCount.text = [[item objectForKey:@"statistics"]objectForKey:@"likeCount"];
+             _dislikeCount.text = [[item objectForKey:@"statistics"] objectForKey:@"dislikeCount"];
+         }
+         
+         
+     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         
+         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
+                                                             message:[error localizedDescription]
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:nil];
+         [alertView show];
+     }];
+    
+    // 5
+    [operation start];
+    
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return !self.sbNeed;
 }
 
 
