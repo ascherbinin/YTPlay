@@ -53,14 +53,16 @@
     
     self.view.frame = [[UIScreen mainScreen] bounds];
     
-    CGRect playerViewRect = CGRectMake(0- self.view.frame.size.width,
-                                       0 + self.view.frame.size.height,
-                                       self.view.frame.size.width,
-                                       self.view.frame.size.width / 16 * 9 );
-    CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
-                                        playerViewRect.size.height,
-                                        playerViewRect.size.width,
-                                        self.view.frame.size.height - playerViewRect.size.height);
+       CGRect playerViewRect = CGRectMake(0- self.view.frame.size.width,
+                                           0 + self.view.frame.size.height,
+                                           self.view.frame.size.width,
+                                           self.view.frame.size.width / 16 * 9 );
+       CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
+                                            playerViewRect.size.height,
+                                            playerViewRect.size.width,
+                                   self.view.frame.size.height - playerViewRect.size.height);
+   
+    
     
     self.videoView.frame = playerViewRect;
     
@@ -89,7 +91,60 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+}
 
+- (void)orientationChanged:(NSNotification *)notification{
+    [self adjustViewsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
+- (void) adjustViewsForOrientation:(UIInterfaceOrientation) orientation {
+    
+    switch (orientation)
+    {
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
+        {
+            NSLog(@"Portrait Orientation");
+            CGRect playerViewRect = CGRectMake(0,
+                                               0,
+                                               self.view.frame.size.width,
+                                               self.view.frame.size.width / 16 * 9 );
+            self.videoView.frame = playerViewRect;
+
+        }
+            
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+        {
+//            if([self IsMinimized])
+//            {
+//                return;
+//            }
+            
+            NSLog(@"Landscape Orientation");
+            
+            
+            CGRect playerViewRect = CGRectMake(0,
+                                               0,
+                                               self.view.frame.size.width,
+                                               self.view.frame.size.height);
+            self.videoView.frame = playerViewRect;
+            NSLog(@"%@",NSStringFromCGRect(self.videoView.frame));
+            [self.view setNeedsDisplay];
+            
+            
+        }
+            break;
+        case UIInterfaceOrientationUnknown:break;
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -443,11 +498,13 @@
     }
     CGRect playerFrame = self.videoView.frame;
     playerFrame.origin.x = -self.videoView.frame.size.width;
-    
+//    CGRect detailRect = self.detailView.frame;
+//    detailRect.origin.x = -self.detailView.frame.size.width;
+  
     [UIView animateWithDuration:0.3 animations:^{
         
         self.videoView.frame = playerFrame;
-
+        //self.detailView.frame = detailRect;
     }];
 }
 
