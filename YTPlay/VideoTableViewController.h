@@ -17,6 +17,9 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet YTPlayerView *videoView;
 
+@property (strong, nonatomic) IBOutlet UIView *titleShadow;
+@property (strong, nonatomic) IBOutlet UIView *detailShadow;
+@property (strong, nonatomic) IBOutlet UIView *descriptionShadow;
 
 @property (strong, nonatomic) IBOutlet UILabel *dislikeCount;
 @property (strong, nonatomic) IBOutlet UILabel *likeCount;
@@ -26,5 +29,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *date;
 @property (nonatomic,strong) NSMutableArray* videoObjects;
 @property (strong, nonatomic) UISearchController    *searchController;
+
+@property (strong, nonatomic) IBOutlet UITextView *textView;
 
 @end

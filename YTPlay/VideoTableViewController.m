@@ -56,7 +56,7 @@
     CGRect playerViewRect = CGRectMake(0- self.view.frame.size.width,
                                        0 + self.view.frame.size.height,
                                        self.view.frame.size.width,
-                                       self.view.frame.size.width / 16 * 9 + 20);
+                                       self.view.frame.size.width / 16 * 9 );
     CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
                                         playerViewRect.size.height,
                                         playerViewRect.size.width,
@@ -83,6 +83,7 @@
     NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
     NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
     NSLog(@"Table View frame=%@", NSStringFromCGRect(_tableView.frame));
+    
     [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
     [self updateUI];
     
@@ -134,6 +135,46 @@
     
     return trimmedReplacement;
     
+}
+
+-(NSString*) changeYouTubeDurationToNormal:(NSMutableString*)duration
+{
+    NSString *temp = [duration substringFromIndex:2];
+    //temp = [temp substringToIndex:[temp length] - 1];
+    duration = [NSMutableString stringWithString: temp];
+    int i = 0;
+    int length = (int)[duration length];
+    while (i<length)
+    {
+        char c = [duration characterAtIndex:i];
+        if(!(c>='0' && c<='9'))
+        {
+            NSRange range = {i,1};
+            switch (c)
+            {
+                case 'H':
+                    [duration replaceCharactersInRange:range withString:@"ч:"];
+                    i++;
+                    length++;
+                    break;
+                case 'M':
+                    [duration replaceCharactersInRange:range withString:@"м:"];
+                    i++;
+                    length++;
+                    break;
+                case 'S':
+                    [duration replaceCharactersInRange:range withString:@"с"];
+                    break;
+                case ':':
+                    break;
+                default:
+                    [duration replaceCharactersInRange:range withString:@" "];
+                    break;
+            }
+        }
+        i++;
+    }
+    return duration;
 }
 
 
@@ -261,6 +302,29 @@
      [[self navigationController] setNavigationBarHidden:YES animated:YES];
 
      
+     _titleShadow.layer.masksToBounds = NO;
+     _titleShadow.layer.shadowColor = [UIColor grayColor].CGColor;
+     _titleShadow.layer.shadowOffset = CGSizeMake(0, 0);
+     _titleShadow.layer.shadowOpacity = 0.9;
+     _titleShadow.layer.shadowRadius = 5;
+     _titleShadow.layer.shadowPath = [[UIBezierPath bezierPathWithRect:_titleShadow.layer.bounds] CGPath];
+     
+     _detailShadow.layer.masksToBounds = NO;
+     _detailShadow.layer.shadowColor = [UIColor grayColor].CGColor;
+     _detailShadow.layer.shadowOffset = CGSizeMake(0, 0);
+     _detailShadow.layer.shadowOpacity = 0.9;
+     _detailShadow.layer.shadowRadius = 5;
+     _detailShadow.layer.shadowPath = [[UIBezierPath bezierPathWithRect:_titleShadow.layer.bounds] CGPath];
+     
+     _descriptionShadow.layer.masksToBounds = NO;
+     _descriptionShadow.layer.shadowColor = [UIColor grayColor].CGColor;
+     _descriptionShadow.layer.shadowOffset = CGSizeMake(0, 0);
+     _descriptionShadow.layer.shadowOpacity = 0.9;
+     _descriptionShadow.layer.shadowRadius = 5;
+     _descriptionShadow.layer.shadowPath = [[UIBezierPath bezierPathWithRect:_titleShadow.layer.bounds] CGPath];
+
+     
+     
       [self.view endEditing:YES];
      
      self.sbNeed = NO;
@@ -269,20 +333,20 @@
      
      [UIView animateWithDuration:0.3 animations:^
       {
-          CGRect playerViewRect = self.videoView.frame;
+          CGRect videoViewRect = self.videoView.frame;
           CGRect detailsViewRect = self.detailView.frame;
           
           NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
           NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
           
-          playerViewRect.origin.x = 0;
-          playerViewRect.origin.y = 0;
-          playerViewRect.size.width = self.view.bounds.size.width;
-          playerViewRect.size.height = playerViewRect.size.width / 16 * 9 + 20;
-          self.videoView.frame = playerViewRect;
+          videoViewRect.origin.x = 0;
+          videoViewRect.origin.y = 0;
+          videoViewRect.size.width = self.view.bounds.size.width;
+          videoViewRect.size.height = videoViewRect.size.width / 16 * 9 ;
+          self.videoView.frame = videoViewRect;
           
           detailsViewRect.origin.x = 0;
-          detailsViewRect.origin.y = playerViewRect.size.height;
+          detailsViewRect.origin.y = videoViewRect.size.height;
           self.detailView.frame = detailsViewRect;
           self.detailView.alpha = 1.0;
           
@@ -392,8 +456,8 @@
     
     if ([self IsMinimized] == minimized) return;
     
-    CGRect tallContainerFrame, containerFrame;
-    CGFloat tallContainerAlpha;
+    CGRect fullContainerFrame, smallContainerFrame;
+    CGFloat fullContainerAlpha;
     
     if (minimized)
     {
@@ -402,14 +466,13 @@
         
         CGFloat x = self.view.bounds.size.width-mpWidth - 20;
         CGFloat y = self.view.bounds.size.height-mpHeight - 20;
+      
         
-        NSLog(@"X: Bound:%f, Frame: %f, Position: %f", self.view.bounds.size.width, self.view.frame.size.width, x);
-        NSLog(@"Y: Bound:%f, Frame: %f, Position: %f", self.view.bounds.size.height, self.view.frame.size.height, y);
-        
-        tallContainerFrame = CGRectMake(0, self.view.frame.size.height,
+        fullContainerFrame = CGRectMake(0, self.view.frame.size.height,
                                         self.detailView.frame.size.width, self.detailView.frame.size.height);
-        containerFrame = CGRectMake(x, y, mpWidth, mpHeight);
-        tallContainerAlpha = 0.0;
+        
+        smallContainerFrame = CGRectMake(x, y, mpWidth, mpHeight);
+        fullContainerAlpha = 0.0;
         
         self.searchController.active = NO;
         [self.view endEditing:YES];
@@ -421,14 +484,14 @@
     }
     else
     {
-        containerFrame.origin.x = 0;
-        containerFrame.origin.y = 0;
-        containerFrame.size.width = self.view.bounds.size.width;
-        containerFrame.size.height = containerFrame.size.width / 16 * 9 + 20;
+        smallContainerFrame.origin.x = 0;
+        smallContainerFrame.origin.y = 0;
+        smallContainerFrame.size.width = self.view.bounds.size.width;
+        smallContainerFrame.size.height = smallContainerFrame.size.width / 16 * 9;
         
-        tallContainerFrame = self.detailView.frame;
-        tallContainerFrame.origin.y = containerFrame.size.height;
-        tallContainerAlpha = 1.0;
+        fullContainerFrame = self.detailView.frame;
+        fullContainerFrame.origin.y = smallContainerFrame.size.height;
+        fullContainerAlpha = 1.0;
         
       
         self.sbNeed = NO;
@@ -437,15 +500,14 @@
         [[self navigationController] setNavigationBarHidden:YES animated:YES];
     }
     
-    NSTimeInterval duration = (animated)? 0.3 : 0.0;
     
-    [UIView animateWithDuration:duration animations:^{
+    [UIView animateWithDuration:(animated)? 0.3 : 0.0 animations:^{
         
         //self.youTubePlayer.frame = containerFrame;
-        self.videoView.frame = containerFrame;
+        self.videoView.frame = smallContainerFrame;
         // self.playerView.webView.frame = CGRectMake(0, 0, containerFrame.size.width, containerFrame.size.height);
-        self.detailView.frame = tallContainerFrame;
-        self.detailView.alpha = tallContainerAlpha;
+        self.detailView.frame = fullContainerFrame;
+        self.detailView.alpha = fullContainerAlpha;
         
     }];
 }
@@ -470,10 +532,22 @@
          {
              NSDictionary* snippet = [item objectForKey:@"snippet"];
              _titleVideo.text = [snippet objectForKey:@"title"];
-             
+             NSString *descriptionText = [snippet objectForKey:@"description"];
+             if(descriptionText)
+             {
+                 _textView.text = descriptionText;
+             }
+             else
+             {
+                 _textView.text = @"Описание отсутствует";
+             }
              NSArray *array = [[snippet objectForKey:@"publishedAt"] componentsSeparatedByString:@"T"];
              _date.text = [NSString stringWithFormat:@"%@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
-             _duration.text = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];
+             NSMutableString *duration = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];
+             
+            
+             _duration.text = [self changeYouTubeDurationToNormal:duration];
+             
              _viewCount.text = [[item objectForKey:@"statistics"] objectForKey:@"viewCount"];
              _likeCount.text = [[item objectForKey:@"statistics"]objectForKey:@"likeCount"];
              _dislikeCount.text = [[item objectForKey:@"statistics"] objectForKey:@"dislikeCount"];

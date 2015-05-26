@@ -16,7 +16,14 @@
 @synthesize date;
 
 - (void)awakeFromNib {
-    // Initialization code
+    
+    
+        imageView.layer.masksToBounds = NO;
+        imageView.layer.shadowColor = [UIColor grayColor].CGColor;
+        imageView.layer.shadowOffset = CGSizeMake(0, -5);
+        imageView.layer.shadowOpacity = 0.9;
+        imageView.layer.shadowRadius = 5;
+        imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.layer.bounds] CGPath];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
