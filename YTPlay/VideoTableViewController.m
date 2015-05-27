@@ -24,8 +24,10 @@
                                         UISearchControllerDelegate,
                                         YTPlayerViewDelegate>
 
-@property bool isMinimized;
+@property BOOL isMinimized;
+@property BOOL isDetailed;
 @property BOOL sbNeed;
+
 @end
 
 @implementation VideoTableViewController
@@ -106,13 +108,15 @@
         case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationPortraitUpsideDown:
         {
+            if(_isDetailed == true)
+            {
             NSLog(@"Portrait Orientation");
             CGRect playerViewRect = CGRectMake(0,
                                                0,
                                                self.view.frame.size.width,
                                                self.view.frame.size.width / 16 * 9 );
             self.videoView.frame = playerViewRect;
-
+            }
         }
             
             break;
@@ -126,14 +130,15 @@
             
             NSLog(@"Landscape Orientation");
             
-            
+            if(_isDetailed == true)
+            {
             CGRect playerViewRect = CGRectMake(0,
                                                0,
                                                self.view.frame.size.width,
                                                self.view.frame.size.height);
             self.videoView.frame = playerViewRect;
+            }
             NSLog(@"%@",NSStringFromCGRect(self.videoView.frame));
-            [self.view setNeedsDisplay];
             
             
         }
@@ -346,6 +351,8 @@
                                   
                                   };
      
+     _isDetailed = true;
+     
      if(indexPath)
      {
          YTJsonItem *item = [_videoObjects objectAtIndex:indexPath.row];
@@ -496,6 +503,7 @@
     {
         return;
     }
+    _isDetailed = false;
     CGRect playerFrame = self.videoView.frame;
     playerFrame.origin.x = -self.videoView.frame.size.width;
 //    CGRect detailRect = self.detailView.frame;
@@ -528,6 +536,8 @@
         fullContainerFrame = CGRectMake(0, self.view.frame.size.height,
                                         self.detailView.frame.size.width, self.detailView.frame.size.height);
         
+        _isDetailed = false;
+        
         smallContainerFrame = CGRectMake(x, y, mpWidth, mpHeight);
         fullContainerAlpha = 0.0;
         
@@ -541,6 +551,8 @@
     }
     else
     {
+        _isDetailed = true;
+        
         smallContainerFrame.origin.x = 0;
         smallContainerFrame.origin.y = 0;
         smallContainerFrame.size.width = self.view.bounds.size.width;
