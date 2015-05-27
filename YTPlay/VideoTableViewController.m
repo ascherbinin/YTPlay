@@ -27,6 +27,7 @@
 @property BOOL isMinimized;
 @property BOOL isDetailed;
 @property BOOL sbNeed;
+@property BOOL isCanMinimize;
 
 @end
 
@@ -105,9 +106,11 @@
     
     switch (orientation)
     {
+          
         case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationPortraitUpsideDown:
         {
+              _isCanMinimize = true;
             if(_isDetailed == true)
             {
             NSLog(@"Portrait Orientation");
@@ -116,13 +119,28 @@
                                                self.view.frame.size.width,
                                                self.view.frame.size.width / 16 * 9 );
             self.videoView.frame = playerViewRect;
+                
+            
+                
+            CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
+                                                playerViewRect.size.height,
+                                                playerViewRect.size.width,
+                                                self.view.frame.size.height - playerViewRect.size.height);
+                
+                
+                
+             self.detailView.frame = detailsViewRect;
             }
+            
+           
         }
             
             break;
         case UIInterfaceOrientationLandscapeLeft:
         case UIInterfaceOrientationLandscapeRight:
         {
+            _isCanMinimize = false;
+            
 //            if([self IsMinimized])
 //            {
 //                return;
@@ -137,6 +155,7 @@
                                                self.view.frame.size.width,
                                                self.view.frame.size.height);
             self.videoView.frame = playerViewRect;
+               
             }
             NSLog(@"%@",NSStringFromCGRect(self.videoView.frame));
             
@@ -524,7 +543,7 @@
     CGRect fullContainerFrame, smallContainerFrame;
     CGFloat fullContainerAlpha;
     
-    if (minimized)
+    if (minimized && _isCanMinimize)
     {
         CGFloat mpWidth = self.videoView.frame.size.width / 2;
         CGFloat mpHeight = self.videoView.frame.size.height / 2;
@@ -602,14 +621,16 @@
              NSDictionary* snippet = [item objectForKey:@"snippet"];
              _titleVideo.text = [snippet objectForKey:@"title"];
              NSString *descriptionText = [snippet objectForKey:@"description"];
-             if(descriptionText)
+             if([descriptionText isEqualToString:@""])
              {
-                 _textView.text = descriptionText;
+                _textView.text = @"Описание отсутствует";
              }
              else
              {
-                 _textView.text = @"Описание отсутствует";
+                  _textView.text = descriptionText;
+                 
              }
+             NSLog(@"String^ %@",descriptionText);
              NSArray *array = [[snippet objectForKey:@"publishedAt"] componentsSeparatedByString:@"T"];
              _date.text = [NSString stringWithFormat:@"%@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
              NSMutableString *duration = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];
