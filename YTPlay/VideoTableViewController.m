@@ -110,9 +110,10 @@
         case UIInterfaceOrientationPortrait:
         case UIInterfaceOrientationPortraitUpsideDown:
         {
-              _isCanMinimize = true;
+            
             if(_isDetailed == true)
             {
+                _isCanMinimize = true;
             NSLog(@"Portrait Orientation");
             CGRect playerViewRect = CGRectMake(0,
                                                0,
@@ -432,6 +433,7 @@
           self.detailView.alpha = 1.0;
           
           [[UIApplication sharedApplication] setStatusBarHidden:NO];
+          _isCanMinimize = true;
     
       }];
 
@@ -510,10 +512,12 @@
 
 - (void)swipeDown:(UIGestureRecognizer *)gr {
     [self minimizeVideo:YES animated:YES];
+    NSLog(@"Swipe Down");
 }
 
 - (void)swipeUp:(UIGestureRecognizer *)gr {
     [self minimizeVideo:NO animated:YES];
+    NSLog(@"Swipe Up");
 }
 
 - (void)swipeLeft:(UIGestureRecognizer *)gr {
@@ -525,13 +529,12 @@
     _isDetailed = false;
     CGRect playerFrame = self.videoView.frame;
     playerFrame.origin.x = -self.videoView.frame.size.width;
-//    CGRect detailRect = self.detailView.frame;
-//    detailRect.origin.x = -self.detailView.frame.size.width;
+
   
     [UIView animateWithDuration:0.3 animations:^{
         
         self.videoView.frame = playerFrame;
-        //self.detailView.frame = detailRect;
+        [self.videoView stopVideo];
     }];
 }
 
@@ -630,7 +633,6 @@
                   _textView.text = descriptionText;
                  
              }
-             NSLog(@"String^ %@",descriptionText);
              NSArray *array = [[snippet objectForKey:@"publishedAt"] componentsSeparatedByString:@"T"];
              _date.text = [NSString stringWithFormat:@"%@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
              NSMutableString *duration = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];

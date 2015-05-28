@@ -21,8 +21,6 @@
 		938E7AAF1B09C6770079101F /* glnews.png in Resources */ = {isa = PBXBuildFile; fileRef = 938E7AAE1B09C6770079101F /* glnews.png */; };
 		938E7ABB1B0B01A50079101F /* YTJsonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E7ABA1B0B01A50079101F /* YTJsonItem.m */; };
 		93A333C61B0C4E7B00FDE094 /* GlobalVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A333C51B0C4E7B00FDE094 /* GlobalVariable.m */; };
-		93A333CB1B0C5E1000FDE094 /* VideoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A333C91B0C5E1000FDE094 /* VideoDetailViewController.m */; };
-		93A333CC1B0C5E1000FDE094 /* VideoDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93A333CA1B0C5E1000FDE094 /* VideoDetailViewController.xib */; };
 		93A333D11B0C6A9200FDE094 /* dislike.png in Resources */ = {isa = PBXBuildFile; fileRef = 93A333CF1B0C6A9200FDE094 /* dislike.png */; };
 		93A333D21B0C6A9200FDE094 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 93A333D01B0C6A9200FDE094 /* like.png */; };
 /* End PBXBuildFile section */
@@ -61,9 +59,6 @@
 		938E7ABA1B0B01A50079101F /* YTJsonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTJsonItem.m; sourceTree = "<group>"; };
 		93A333C41B0C4E7B00FDE094 /* GlobalVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVariable.h; sourceTree = "<group>"; };
 		93A333C51B0C4E7B00FDE094 /* GlobalVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalVariable.m; sourceTree = "<group>"; };
-		93A333C81B0C5E1000FDE094 /* VideoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoDetailViewController.h; sourceTree = "<group>"; };
-		93A333C91B0C5E1000FDE094 /* VideoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoDetailViewController.m; sourceTree = "<group>"; };
-		93A333CA1B0C5E1000FDE094 /* VideoDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoDetailViewController.xib; sourceTree = "<group>"; };
 		93A333CF1B0C6A9200FDE094 /* dislike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dislike.png; sourceTree = "<group>"; };
 		93A333D01B0C6A9200FDE094 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
 		BBDFFB80D5D26E5F9EAFB500 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -126,7 +121,6 @@
 		938E79D51B09864F0079101F /* YTPlay */ = {
 			isa = PBXGroup;
 			children = (
-				93A333C71B0C5DD900FDE094 /* VideoDetailView */,
 				938E7A211B09C64C0079101F /* Resource */,
 				938E7A1B1B09C2F60079101F /* VideoCell */,
 				938E79DA1B09864F0079101F /* AppDelegate.h */,
@@ -200,16 +194,6 @@
 				938E7ABA1B0B01A50079101F /* YTJsonItem.m */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		93A333C71B0C5DD900FDE094 /* VideoDetailView */ = {
-			isa = PBXGroup;
-			children = (
-				93A333C81B0C5E1000FDE094 /* VideoDetailViewController.h */,
-				93A333C91B0C5E1000FDE094 /* VideoDetailViewController.m */,
-				93A333CA1B0C5E1000FDE094 /* VideoDetailViewController.xib */,
-			);
-			name = VideoDetailView;
 			sourceTree = "<group>";
 		};
 		93A333CD1B0C6A9200FDE094 /* Resource */ = {
@@ -327,7 +311,6 @@
 				93A333D11B0C6A9200FDE094 /* dislike.png in Resources */,
 				938E79E71B09864F0079101F /* LaunchScreen.xib in Resources */,
 				938E79E41B09864F0079101F /* Images.xcassets in Resources */,
-				93A333CC1B0C5E1000FDE094 /* VideoDetailViewController.xib in Resources */,
 				938E7AAF1B09C6770079101F /* glnews.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -385,7 +368,6 @@
 				938E79D91B09864F0079101F /* main.m in Sources */,
 				93A333C61B0C4E7B00FDE094 /* GlobalVariable.m in Sources */,
 				938E7ABB1B0B01A50079101F /* YTJsonItem.m in Sources */,
-				93A333CB1B0C5E1000FDE094 /* VideoDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
