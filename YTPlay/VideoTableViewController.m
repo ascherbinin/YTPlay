@@ -24,21 +24,22 @@
                                         UISearchControllerDelegate,
                                         YTPlayerViewDelegate>
 
-@property BOOL isMinimized;
-@property BOOL isDetailed;
-@property BOOL sbNeed;
-@property BOOL isCanMinimize;
+@property BOOL isMinimized; //  переменная для проверки состояния плейера (уменьшен или нет)
+@property BOOL isDetailed; // переменная для проверки состояния view (detail или table)
+@property BOOL sbNeed; // переменная для указания необходимости отображать status bar
+@property BOOL isCanMinimize; // переменная для указания возможности уменьшения видео плейера
 
 @end
 
 @implementation VideoTableViewController
 @synthesize detailView;
 
+#pragma mark - Инициализация и загрузка
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    //GlobalVariable *gl = [[GlobalVariable alloc]init];
-    
+
+    //Инициализация поиска
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchController.dimsBackgroundDuringPresentation = NO;
     [self.searchController setHidesNavigationBarDuringPresentation:NO];
@@ -56,6 +57,8 @@
     
     self.view.frame = [[UIScreen mainScreen] bounds];
     
+    
+    //Задание первоначальных позиций и размеров для player и деталий видео (за экраном)
        CGRect playerViewRect = CGRectMake(0- self.view.frame.size.width,
                                            0 + self.view.frame.size.height,
                                            self.view.frame.size.width,
@@ -72,6 +75,7 @@
     self.detailView.frame = detailsViewRect;
     
     
+    //Регистрация реакции на свайпы по плееру
     UISwipeGestureRecognizer *swipeDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeDown:)];
     UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp:)];
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
@@ -85,11 +89,14 @@
     [self.videoView addGestureRecognizer:swipeLeft];
     
     self.tableView.frame = self.view.bounds;
-    NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
-    NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
-    NSLog(@"Table View frame=%@", NSStringFromCGRect(_tableView.frame));
     
+//    NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
+//    NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
+//    NSLog(@"Table View frame=%@", NSStringFromCGRect(_tableView.frame));
+    
+    //Загрузка плейлиста в таблицу
     [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
+    
     [self updateUI];
     
 }
@@ -98,74 +105,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
 }
 
-- (void)orientationChanged:(NSNotification *)notification{
-    [self adjustViewsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
-}
-
-- (void) adjustViewsForOrientation:(UIInterfaceOrientation) orientation {
-    
-    switch (orientation)
-    {
-          
-        case UIInterfaceOrientationPortrait:
-        case UIInterfaceOrientationPortraitUpsideDown:
-        {
-            
-            if(_isDetailed == true)
-            {
-                _isCanMinimize = true;
-            NSLog(@"Portrait Orientation");
-            CGRect playerViewRect = CGRectMake(0,
-                                               0,
-                                               self.view.frame.size.width,
-                                               self.view.frame.size.width / 16 * 9 );
-            self.videoView.frame = playerViewRect;
-                
-            
-                
-            CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
-                                                playerViewRect.size.height,
-                                                playerViewRect.size.width,
-                                                self.view.frame.size.height - playerViewRect.size.height);
-                
-                
-                
-             self.detailView.frame = detailsViewRect;
-            }
-            
-           
-        }
-            
-            break;
-        case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight:
-        {
-            _isCanMinimize = false;
-            
-//            if([self IsMinimized])
-//            {
-//                return;
-//            }
-            
-            NSLog(@"Landscape Orientation");
-            
-            if(_isDetailed == true)
-            {
-            CGRect playerViewRect = CGRectMake(0,
-                                               0,
-                                               self.view.frame.size.width,
-                                               self.view.frame.size.height);
-            self.videoView.frame = playerViewRect;
-               
-            }
-            NSLog(@"%@",NSStringFromCGRect(self.videoView.frame));
-            
-            
-        }
-            break;
-        case UIInterfaceOrientationUnknown:break;
-    }
-}
 
 -(void)viewDidDisappear:(BOOL)animated{
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -176,11 +115,87 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self)
     {
-        _videoObjects = [[NSMutableArray alloc] init];
+        _videoObjects = [[NSMutableArray alloc] init]; //Инициализация массива для хранения и вывода информации о видео в таблицу
     }
     
     return self;
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Блок с отловом событий изменения ориентации
+
+- (void)orientationChanged:(NSNotification *)notification
+{
+    [self adjustViewsForOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
+- (void) adjustViewsForOrientation:(UIInterfaceOrientation) orientation
+{
+    
+    switch (orientation)
+    {
+            
+        case UIInterfaceOrientationPortrait:
+        case UIInterfaceOrientationPortraitUpsideDown:
+        {
+            
+            if(_isDetailed == true)
+            {
+                _isCanMinimize = true;
+                NSLog(@"Portrait Orientation");
+                CGRect playerViewRect = CGRectMake(0,
+                                                   0,
+                                                   self.view.frame.size.width,
+                                                   self.view.frame.size.width / 16 * 9 );
+                self.videoView.frame = playerViewRect;
+                
+                
+                
+                CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
+                                                    playerViewRect.size.height,
+                                                    playerViewRect.size.width,
+                                                    self.view.frame.size.height - playerViewRect.size.height);
+                
+                
+                
+                self.detailView.frame = detailsViewRect;
+            }
+            
+            
+        }
+            
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+        {
+            _isCanMinimize = false;
+            
+            NSLog(@"Landscape Orientation");
+            
+            if(_isDetailed == true)
+            {
+                CGRect playerViewRect = CGRectMake(0,
+                                                   0,
+                                                   self.view.frame.size.width,
+                                                   self.view.frame.size.height);
+                self.videoView.frame = playerViewRect;
+                
+            }
+            NSLog(@"%@",NSStringFromCGRect(self.videoView.frame));
+            
+            
+        }
+            break;
+        case UIInterfaceOrientationUnknown:break;
+    }
+}
+
+
+
+#pragma mark - Блок с поиском
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
@@ -207,72 +222,19 @@
 
 }
 
-- (NSString *)replaceWhiteByPlus:(NSString *)string {
-    
-    NSCharacterSet *charactersToRemove = [NSCharacterSet characterSetWithCharactersInString:@" "];
-    NSString *trimmedReplacement = [[string componentsSeparatedByCharactersInSet:charactersToRemove]
-                                    componentsJoinedByString:@"+"];
-    
-    return trimmedReplacement;
-    
-}
-
--(NSString*) changeYouTubeDurationToNormal:(NSMutableString*)duration
-{
-    NSString *temp = [duration substringFromIndex:2];
-    //temp = [temp substringToIndex:[temp length] - 1];
-    duration = [NSMutableString stringWithString: temp];
-    int i = 0;
-    int length = (int)[duration length];
-    while (i<length)
-    {
-        char c = [duration characterAtIndex:i];
-        if(!(c>='0' && c<='9'))
-        {
-            NSRange range = {i,1};
-            switch (c)
-            {
-                case 'H':
-                    [duration replaceCharactersInRange:range withString:@"ч:"];
-                    i++;
-                    length++;
-                    break;
-                case 'M':
-                    [duration replaceCharactersInRange:range withString:@"м:"];
-                    i++;
-                    length++;
-                    break;
-                case 'S':
-                    [duration replaceCharactersInRange:range withString:@"с"];
-                    break;
-                case ':':
-                    break;
-                default:
-                    [duration replaceCharactersInRange:range withString:@" "];
-                    break;
-            }
-        }
-        i++;
-    }
-    return duration;
-}
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-   }
-
-#pragma mark - Table view data source
+#pragma mark - Работа с таблицей
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 
-    // Return the number of sections.
+  
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    // Return the number of rows in the section.
+  
     NSLog(@"Count element in init number row - %lu",(unsigned long)[_videoObjects count]);
     return [_videoObjects count];
 }
@@ -302,8 +264,7 @@
     
    NSLog(@"Номер строки - %ld",(long)[indexPath row]);
     
-  // [cell.ytPlayerView loadWithVideoId:oneVideoItem.videoID playerVars:playerVars];
-    
+    //Загрузка изображения в ячейку
     NSString *imageStringURL = oneVideoItem.thumbURl;;
         NSURL* imageURL = [NSURL URLWithString: imageStringURL];
         if(imageURL != nil)
@@ -315,6 +276,8 @@
             cell.imageView.image = [UIImage imageNamed:@"glnews.png"];
         }
     
+    
+    //Загрузка остальных данных в ячейку таблицы
     cell.title.text =oneVideoItem.videoTitle;
     
     NSArray *array = [oneVideoItem.videoDate componentsSeparatedByString:@"T"];
@@ -329,9 +292,7 @@
 
 
 - (void)updateUI {
-    //
-    // Playlist table.
-    //
+   
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -344,16 +305,6 @@
 
 
 }
-
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return NO;
-}
-
-
-
-
 
  - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
@@ -384,6 +335,7 @@
      [[self navigationController] setNavigationBarHidden:YES animated:YES];
 
      
+// Реализация теней на странице с деталями о видео
      _titleShadow.layer.masksToBounds = NO;
      _titleShadow.layer.shadowColor = [UIColor grayColor].CGColor;
      _titleShadow.layer.shadowOffset = CGSizeMake(0, 0);
@@ -412,6 +364,8 @@
      self.sbNeed = NO;
      [self setNeedsStatusBarAppearanceUpdate];
      
+ 
+     //Анимация появления страницы с деталями о видео
      
      [UIView animateWithDuration:0.3 animations:^
       {
@@ -441,8 +395,8 @@
   
  }
 
-#pragma mark - Loding data
-#
+#pragma mark - Загрузка данных о плейлисте и видео
+
 -(void) loadPlayListVideos:(NSString*) urlString
 {
      [_videoObjects removeAllObjects];
@@ -505,9 +459,66 @@
     
 }
 
-- (BOOL)IsMinimized {
-    return self.videoView.frame.origin.y > 50;
+-(void) loadVideoInfo:(NSString*) urlString
+{
+    
+    NSURL *videoIdURL = [NSURL URLWithString:urlString];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:videoIdURL];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         
+         NSDictionary *items = [responseObject objectForKey:@"items"];
+         NSLog(@"JSON Retrieved");
+         
+         for (NSDictionary *item in items )
+         {
+             NSDictionary* snippet = [item objectForKey:@"snippet"];
+             _titleVideo.text = [snippet objectForKey:@"title"];
+             NSString *descriptionText = [snippet objectForKey:@"description"];
+             if([descriptionText isEqualToString:@""])
+             {
+                 _textView.text = @"Описание отсутствует";
+             }
+             else
+             {
+                 _textView.text = descriptionText;
+                 
+             }
+             NSArray *array = [[snippet objectForKey:@"publishedAt"] componentsSeparatedByString:@"T"];
+             _date.text = [NSString stringWithFormat:@"%@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
+             NSMutableString *duration = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];
+             
+             
+             _duration.text = [self changeYouTubeDurationToNormal:duration];
+             
+             _viewCount.text = [[item objectForKey:@"statistics"] objectForKey:@"viewCount"];
+             _likeCount.text = [[item objectForKey:@"statistics"]objectForKey:@"likeCount"];
+             _dislikeCount.text = [[item objectForKey:@"statistics"] objectForKey:@"dislikeCount"];
+         }
+         
+         
+     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         
+         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
+                                                             message:[error localizedDescription]
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"Ok"
+                                                   otherButtonTitles:nil];
+         [alertView show];
+     }];
+    
+    // 5
+    [operation start];
+    
 }
+
+#pragma mark - Блок по работе с свайпами и уменьшением видео
 
 
 - (void)swipeDown:(UIGestureRecognizer *)gr {
@@ -603,68 +614,67 @@
     }];
 }
 
--(void) loadVideoInfo:(NSString*) urlString
-{
-    
-    NSURL *videoIdURL = [NSURL URLWithString:urlString];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:videoIdURL];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         
-         NSDictionary *items = [responseObject objectForKey:@"items"];
-         NSLog(@"JSON Retrieved");
-         
-         for (NSDictionary *item in items )
-         {
-             NSDictionary* snippet = [item objectForKey:@"snippet"];
-             _titleVideo.text = [snippet objectForKey:@"title"];
-             NSString *descriptionText = [snippet objectForKey:@"description"];
-             if([descriptionText isEqualToString:@""])
-             {
-                _textView.text = @"Описание отсутствует";
-             }
-             else
-             {
-                  _textView.text = descriptionText;
-                 
-             }
-             NSArray *array = [[snippet objectForKey:@"publishedAt"] componentsSeparatedByString:@"T"];
-             _date.text = [NSString stringWithFormat:@"%@ в %@",array[0], [(NSString*)array[1] substringToIndex:8 ]];
-             NSMutableString *duration = [[item objectForKey:@"contentDetails"] objectForKey:@"duration"];
-             
-            
-             _duration.text = [self changeYouTubeDurationToNormal:duration];
-             
-             _viewCount.text = [[item objectForKey:@"statistics"] objectForKey:@"viewCount"];
-             _likeCount.text = [[item objectForKey:@"statistics"]objectForKey:@"likeCount"];
-             _dislikeCount.text = [[item objectForKey:@"statistics"] objectForKey:@"dislikeCount"];
-         }
-         
-         
-     }failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         
-         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
-                                                             message:[error localizedDescription]
-                                                            delegate:nil
-                                                   cancelButtonTitle:@"Ok"
-                                                   otherButtonTitles:nil];
-         [alertView show];
-     }];
-    
-    // 5
-    [operation start];
-    
-}
+
+
+#pragma mark - Вспомогательные методы
 
 - (BOOL)prefersStatusBarHidden
 {
     return !self.sbNeed;
+}
+
+- (BOOL)IsMinimized {
+    return self.videoView.frame.origin.y > 50;
+}
+
+- (NSString *)replaceWhiteByPlus:(NSString *)string {
+    
+    NSCharacterSet *charactersToRemove = [NSCharacterSet characterSetWithCharactersInString:@" "];
+    NSString *trimmedReplacement = [[string componentsSeparatedByCharactersInSet:charactersToRemove]
+                                    componentsJoinedByString:@"+"];
+    
+    return trimmedReplacement;
+    
+}
+
+-(NSString*) changeYouTubeDurationToNormal:(NSMutableString*)duration
+{
+    NSString *temp = [duration substringFromIndex:2];
+    //temp = [temp substringToIndex:[temp length] - 1];
+    duration = [NSMutableString stringWithString: temp];
+    int i = 0;
+    int length = (int)[duration length];
+    while (i<length)
+    {
+        char c = [duration characterAtIndex:i];
+        if(!(c>='0' && c<='9'))
+        {
+            NSRange range = {i,1};
+            switch (c)
+            {
+                case 'H':
+                    [duration replaceCharactersInRange:range withString:@"ч:"];
+                    i++;
+                    length++;
+                    break;
+                case 'M':
+                    [duration replaceCharactersInRange:range withString:@"м:"];
+                    i++;
+                    length++;
+                    break;
+                case 'S':
+                    [duration replaceCharactersInRange:range withString:@"с"];
+                    break;
+                case ':':
+                    break;
+                default:
+                    [duration replaceCharactersInRange:range withString:@" "];
+                    break;
+            }
+        }
+        i++;
+    }
+    return duration;
 }
 
 

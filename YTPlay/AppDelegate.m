@@ -24,12 +24,8 @@
     VideoTableViewController *mainVideoViewController = [[VideoTableViewController alloc] initWithNibName:@"VideoTableViewController" bundle:nil];
 
      UINavigationController *popularVideoNavigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
-//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
-//    self.window.rootViewController = self.navigationController;
-    
-    
-    //self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+
+     [self.window makeKeyAndVisible];
      [self.window setRootViewController:popularVideoNavigationController];
     return YES;
 }
