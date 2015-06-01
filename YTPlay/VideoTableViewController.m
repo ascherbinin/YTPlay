@@ -102,6 +102,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
 }
 
@@ -367,6 +368,11 @@
  
      //Анимация появления страницы с деталями о видео
      
+     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
+     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){         
+         
+     
      [UIView animateWithDuration:0.3 animations:^
       {
           CGRect videoViewRect = self.videoView.frame;
@@ -390,10 +396,14 @@
           _isCanMinimize = true;
     
       }];
+         
+         [MBProgressHUD hideHUDForView:self.view animated:YES];
+     });
 
      
   
  }
+
 
 #pragma mark - Загрузка данных о плейлисте и видео
 

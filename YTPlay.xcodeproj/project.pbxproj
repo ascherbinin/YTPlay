@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		24304DD279A5E006DECA2164 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34597E59060502CB5C35DE01 /* libPods.a */; };
+		936113C81B1C079B007C3C50 /* ytlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 936113C71B1C079B007C3C50 /* ytlogo.png */; };
 		938E79D91B09864F0079101F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E79D81B09864F0079101F /* main.m */; };
 		938E79DC1B09864F0079101F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E79DB1B09864F0079101F /* AppDelegate.m */; };
 		938E79E41B09864F0079101F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 938E79E31B09864F0079101F /* Images.xcassets */; };
@@ -20,7 +21,6 @@
 		938E7A201B09C3260079101F /* TableVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938E7A1E1B09C3260079101F /* TableVideoCell.xib */; };
 		938E7AAF1B09C6770079101F /* glnews.png in Resources */ = {isa = PBXBuildFile; fileRef = 938E7AAE1B09C6770079101F /* glnews.png */; };
 		938E7ABB1B0B01A50079101F /* YTJsonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 938E7ABA1B0B01A50079101F /* YTJsonItem.m */; };
-		93A333C61B0C4E7B00FDE094 /* GlobalVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A333C51B0C4E7B00FDE094 /* GlobalVariable.m */; };
 		93A333D11B0C6A9200FDE094 /* dislike.png in Resources */ = {isa = PBXBuildFile; fileRef = 93A333CF1B0C6A9200FDE094 /* dislike.png */; };
 		93A333D21B0C6A9200FDE094 /* like.png in Resources */ = {isa = PBXBuildFile; fileRef = 93A333D01B0C6A9200FDE094 /* like.png */; };
 /* End PBXBuildFile section */
@@ -37,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		34597E59060502CB5C35DE01 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		936113C71B1C079B007C3C50 /* ytlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ytlogo.png; sourceTree = "<group>"; };
 		938E79D31B09864F0079101F /* YTPlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YTPlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		938E79D71B09864F0079101F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		938E79D81B09864F0079101F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -57,8 +58,6 @@
 		938E7AAE1B09C6770079101F /* glnews.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glnews.png; sourceTree = "<group>"; };
 		938E7AB91B0B01A50079101F /* YTJsonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YTJsonItem.h; sourceTree = "<group>"; };
 		938E7ABA1B0B01A50079101F /* YTJsonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YTJsonItem.m; sourceTree = "<group>"; };
-		93A333C41B0C4E7B00FDE094 /* GlobalVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalVariable.h; sourceTree = "<group>"; };
-		93A333C51B0C4E7B00FDE094 /* GlobalVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalVariable.m; sourceTree = "<group>"; };
 		93A333CF1B0C6A9200FDE094 /* dislike.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dislike.png; sourceTree = "<group>"; };
 		93A333D01B0C6A9200FDE094 /* like.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = like.png; sourceTree = "<group>"; };
 		BBDFFB80D5D26E5F9EAFB500 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -98,8 +97,6 @@
 			isa = PBXGroup;
 			children = (
 				93A333CD1B0C6A9200FDE094 /* Resource */,
-				93A333C41B0C4E7B00FDE094 /* GlobalVariable.h */,
-				93A333C51B0C4E7B00FDE094 /* GlobalVariable.m */,
 				938E7AB81B0B01870079101F /* Model */,
 				938E79D51B09864F0079101F /* YTPlay */,
 				938E79EF1B09864F0079101F /* YTPlayTests */,
@@ -208,6 +205,7 @@
 		93A333CE1B0C6A9200FDE094 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				936113C71B1C079B007C3C50 /* ytlogo.png */,
 				93A333CF1B0C6A9200FDE094 /* dislike.png */,
 				93A333D01B0C6A9200FDE094 /* like.png */,
 			);
@@ -308,6 +306,7 @@
 				938E7A081B09914B0079101F /* VideoTableViewController.xib in Resources */,
 				93A333D21B0C6A9200FDE094 /* like.png in Resources */,
 				938E7A201B09C3260079101F /* TableVideoCell.xib in Resources */,
+				936113C81B1C079B007C3C50 /* ytlogo.png in Resources */,
 				93A333D11B0C6A9200FDE094 /* dislike.png in Resources */,
 				938E79E71B09864F0079101F /* LaunchScreen.xib in Resources */,
 				938E79E41B09864F0079101F /* Images.xcassets in Resources */,
@@ -366,7 +365,6 @@
 				938E7A1F1B09C3260079101F /* TableVideoCell.m in Sources */,
 				938E79DC1B09864F0079101F /* AppDelegate.m in Sources */,
 				938E79D91B09864F0079101F /* main.m in Sources */,
-				93A333C61B0C4E7B00FDE094 /* GlobalVariable.m in Sources */,
 				938E7ABB1B0B01A50079101F /* YTJsonItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
