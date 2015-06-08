@@ -63,7 +63,7 @@
                                            0 + self.view.frame.size.height,
                                            self.view.frame.size.width,
                                            self.view.frame.size.width / 16 * 9 );
-       CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x-70,
+       CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
                                             playerViewRect.size.height,
                                             playerViewRect.size.width,
                                    self.view.frame.size.height - playerViewRect.size.height);
@@ -90,9 +90,6 @@
     
     self.tableView.frame = self.view.bounds;
     
-//    NSLog(@"Video view frame=%@", NSStringFromCGRect(_videoView.frame));
-//    NSLog(@"Detail View frame=%@", NSStringFromCGRect(detailView.frame));
-//    NSLog(@"Table View frame=%@", NSStringFromCGRect(_tableView.frame));
     
     //Загрузка плейлиста в таблицу
     [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
