@@ -41,7 +41,7 @@
 
     //Инициализация поиска
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.dimsBackgroundDuringPresentation = NO;
+    //self.searchController.dimsBackgroundDuringPresentation = NO;
     [self.searchController setHidesNavigationBarDuringPresentation:NO];
     [self.searchController.searchBar sizeToFit];
     self.searchController.searchBar.delegate = self;
@@ -63,7 +63,7 @@
                                            0 + self.view.frame.size.height,
                                            self.view.frame.size.width,
                                            self.view.frame.size.width / 16 * 9 );
-       CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x,
+       CGRect detailsViewRect = CGRectMake(playerViewRect.origin.x-70,
                                             playerViewRect.size.height,
                                             playerViewRect.size.width,
                                    self.view.frame.size.height - playerViewRect.size.height);
@@ -97,7 +97,8 @@
     //Загрузка плейлиста в таблицу
     [self loadPlayListVideos:@"https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=PLgMaGEI-ZiiZ0ZvUtduoDRVXcU5ELjPcI&fields=items(contentDetails%2Cid%2Csnippet)&key=AIzaSyCzTRyYshWtUlqkE9OP4VOjZbFh7dlxvuo"];
     
-    [self updateUI];
+    [self.tableView reloadData];
+    
     
 }
 
@@ -291,22 +292,6 @@
 
 
 
-
-- (void)updateUI {
-   
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    
-        [self.tableView reloadData];
-        
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-    });
-    
-
-
-}
-
  - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
      NSDictionary *playerVars = @{
@@ -367,10 +352,6 @@
      
  
      //Анимация появления страницы с деталями о видео
-     
-     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC);
-     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){         
          
      
      [UIView animateWithDuration:0.3 animations:^
@@ -397,8 +378,7 @@
     
       }];
          
-         [MBProgressHUD hideHUDForView:self.view animated:YES];
-     });
+       
 
      
   
@@ -409,7 +389,9 @@
 
 -(void) loadPlayListVideos:(NSString*) urlString
 {
+    
      [_videoObjects removeAllObjects];
+    self.loadingView.hidden =false;
     
     NSURL *mostPopularURL = [NSURL URLWithString:urlString];
     
@@ -417,6 +399,8 @@
     
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     operation.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
      {
@@ -448,13 +432,15 @@
              tempYTItem.thumbURl= [[[snippet objectForKey:@"thumbnails"] objectForKey:@"high"] objectForKey:@"url"];
              tempYTItem.videoDate =[snippet objectForKey:@"publishedAt"];
              [_videoObjects addObject:tempYTItem];
+             self.loadingView.hidden = true;
              
          }
          
-         [self updateUI];
+         [self.tableView reloadData];
          
      }failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
+         self.loadingView.hidden = true;
          
          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
                                                              message:[error localizedDescription]
@@ -462,6 +448,7 @@
                                                    cancelButtonTitle:@"Ok"
                                                    otherButtonTitles:nil];
          [alertView show];
+         
      }];
     
     // 5
@@ -471,6 +458,9 @@
 
 -(void) loadVideoInfo:(NSString*) urlString
 {
+    
+    self.loadingView.hidden =false;
+
     
     NSURL *videoIdURL = [NSURL URLWithString:urlString];
     
@@ -511,10 +501,11 @@
              _dislikeCount.text = [[item objectForKey:@"statistics"] objectForKey:@"dislikeCount"];
          }
          
-         
+         self.loadingView.hidden =true;
+
      }failure:^(AFHTTPRequestOperation *operation, NSError *error)
      {
-         
+         self.loadingView.hidden =true;
          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving PlayList"
                                                              message:[error localizedDescription]
                                                             delegate:nil

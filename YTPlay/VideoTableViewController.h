@@ -16,6 +16,8 @@
 @property (strong, nonatomic) IBOutlet UIView *detailView;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet YTPlayerView *videoView;
+@property (strong, nonatomic) IBOutlet UIView *loadingView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @property (strong, nonatomic) IBOutlet UIView *titleShadow;
 @property (strong, nonatomic) IBOutlet UIView *detailShadow;
