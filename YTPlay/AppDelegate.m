@@ -23,10 +23,10 @@
     
     VideoTableViewController *mainVideoViewController = [[VideoTableViewController alloc] initWithNibName:@"VideoTableViewController" bundle:nil];
 
-     UINavigationController *popularVideoNavigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
+     //UINavigationController *popularVideoNavigationController = [[UINavigationController alloc] initWithRootViewController:mainVideoViewController];
 
      [self.window makeKeyAndVisible];
-     [self.window setRootViewController:popularVideoNavigationController];
+     [self.window setRootViewController:mainVideoViewController];
     return YES;
 }
 

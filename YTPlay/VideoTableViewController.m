@@ -42,7 +42,7 @@
     //Инициализация поиска
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     //self.searchController.dimsBackgroundDuringPresentation = NO;
-    [self.searchController setHidesNavigationBarDuringPresentation:NO];
+    //[self.searchController setHidesNavigationBarDuringPresentation:NO];
     [self.searchController.searchBar sizeToFit];
     self.searchController.searchBar.delegate = self;
     self.searchController.searchBar.placeholder = @"Поиск!";
@@ -575,7 +575,7 @@
         self.searchController.active = NO;
         [self.view endEditing:YES];
         
-        self.sbNeed = YES;
+        self.sbNeed = NO;
         [self setNeedsStatusBarAppearanceUpdate];
         
         [[self navigationController] setNavigationBarHidden:NO animated:YES];
